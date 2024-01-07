@@ -1,0 +1,65 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+	})
+	
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		CORE_URL = '@model.url';
+		PAGE = @model.page;
+		CORE = '@model.core'
+		</script>
+		<script src="/blotter.js"></script>
+	})
+	
+	@html.block('content', function(model) {		
+		<div class="container" ng-controller="BlotterController">			
+	    	<table id="exportable">
+				<thead>
+					<tr>
+						<th>Timestamp</th>
+						<th>Match ID</th>						
+						<th>Account</th>
+						<th>Trader</th>
+						<th>Side</th>
+						<th>Qty</th>
+						<th>Security</th>
+						<th>Price(32)</th>			
+						<th>Price</th>		
+						<th>Order ID</th>				
+						<th>ClOrdID</th>				
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in data | orderBy:['-matchID', 'aggress']">
+						<td>{{ item.timestamp | HHMMSSsss }}</td>
+						<td>{{ item.matchID }} {{ item.aggress ? 'A' : 'P' }}</td>
+						<td>{{ item.account }}</td>
+						<td>{{ item.trader }}</td>
+						<td>{{ item.buy ? 'BUY' : 'SELL' }}</td>
+						<td>{{ item.qty | qty }}</td>
+						<td>{{ item.security }}</td>
+						<td>{{ item.price32 }}</td>					
+						<td>{{ item.price }}</td>		
+						<td>{{ item.id }}</td>				
+						<td>{{ item.clOrdID }}</td>							
+					</tr>
+				</tbody>
+			</table>	
+			
+			<br>
+			<form name="PageSelection" ng-submit="pageChanged()">
+			    <label>
+			      Page
+			        <input size="5" name="CurrentPage" ng-model="currentPage" value="{{page}}" />
+			    </label>
+			    <label style="margin-right:10px">
+			        of {{numPages}}
+			    </label>     
+			</form>
+			<button ng-click="firstPage()" ng-disabled="currentPage<=1">First</button>
+			<button ng-click="prevPage()" ng-disabled="currentPage<=1">Prev</button>
+			<button ng-click="nextPage()" ng-disabled="currentPage>=numPages">Next</button>
+			<button ng-click="lastPage()" ng-disabled="currentPage>=numPages">Last</button>	
+		</div>	
+	})
+})

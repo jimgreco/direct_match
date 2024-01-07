@@ -1,0 +1,19 @@
+	<div class="topbar">
+		monitors:
+		@model.monitors.forEach(function(item) {
+			@if(model.monitor == item) {
+				<span class="tab selected" target="_self">@item</span>
+			} else {
+				<a class="tab" href="/@item/@model.core" target="_self">@item</a>
+			}
+		})
+		|
+		cores: 
+		@model.cores.forEach(function(item) { 
+			@if(model.core == item) {
+				<span class="tab selected" target="_self">@item</span>
+			} else {
+				<a class="tab" href="/@model.monitor/@item" target="_self">@item</a>
+			}
+		})
+	</div>

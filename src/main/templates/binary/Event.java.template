@@ -1,0 +1,12 @@
+package $package;
+
+public interface ${prefix}${msg.name}Event extends ${msg.extends}Event {
+    ${prefix}${msg.name}Command toCommand();
+  #for $field in $msg.fields
+
+    #for $get in $field.getters:
+    $get.type get${field.name}${get.name}();
+    #end for
+    boolean has${field.name}();
+  #end for
+} 

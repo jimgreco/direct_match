@@ -1,0 +1,234 @@
+<core prefix="Match"
+      package="com.core.match.msgs"
+      timestampOffset="7"
+      msgTypeOffset="0"
+      printer="true"
+      types="types.xml"
+      extends="com.core.match.msgs.MatchCommon">
+    <constant name="STATICS_START_INDEX" value="1" type="int" final="true" />
+    <constant name="CLORDID_LENGTH" value="32" type="int" final="true" />
+    <constant name="CONTRIBUTOR_NAME_LENGTH" value="10" type="int" final="true" />
+
+    <constant name="TIME_ZONE" value="&quot;America/New_York&quot;" type="String" />
+    <constant name="SESSION_ROLLOVER_TIME" value="&quot;18:00&quot;" type="String" />
+
+    <constant name="MAX_LIVE_ORDERS" value="100000" type="int" />
+    <constant name="IMPLIED_DECIMALS" value="9" type="int" />
+    <constant name="QTY_MULTIPLIER" value="1000000" type="int" />
+	
+    <msg name="Common" id="." extends="com.core.connector.CoreCommon">
+        <field name="MsgType" type="Char" />
+        <field name="ContributorID" type="Short" />
+        <field name="ContributorSeq" type="Int" />
+        <field name="Timestamp" type="Timestamp" />
+    </msg>
+
+    <msg name="Contributor" id="C">
+        <field name="SourceContributorID" type="Short" />
+        <field name="Name" type="String" />
+        <field name="CancelOnDisconnect" type="Bool"/>
+    </msg>
+
+    <msg name="Trader" id="T">
+        <field name="TraderID" type="Short"/>
+        <field name="AccountID" type="Short" />
+        <field name="Name" type="String" />
+        <field name="FatFinger2YLimit" type="Int" />
+        <field name="FatFinger3YLimit" type="Int" />
+        <field name="FatFinger5YLimit" type="Int" />
+        <field name="FatFinger7YLimit" type="Int" />
+        <field name="FatFinger10YLimit" type="Int" />
+        <field name="FatFinger30YLimit" type="Int" />
+    </msg>
+    
+    <msg name="SystemEvent" id="E">
+    	<field name="EventType" type="Char" enum="SystemEvent" />
+    </msg>
+
+    <msg name="Account" id="A">
+        <field name="AccountID" type="Short" />
+        <field name="Name" type="String" />
+        <field name="NetDV01Limit" type="Int" />
+        <field name="Commission" type="Price" />
+        <field name="SSGMID" type="String" />
+        <field name="NettingClearing" type="Bool" />
+    </msg>
+
+    <msg name="Security" id="S">
+        <field name="SecurityID" type="Short" />
+        <field name="Name" type="String" />
+        <field name="CUSIP" type="String" />
+        <field name="MaturityDate" type="Date" />
+        <field name="Coupon" type="Price" />
+        <field name="Type" type="Char" enum="SecurityType" />
+        <field name="IssueDate" type="Date" />
+        <field name="CouponFrequency" type="Byte" /> 
+        <field name="TickSize" type="Price" />
+        <field name="LotSize" type="Qty" />
+        <field name="BloombergID" type="String" />
+        <field name="NumLegs" type="Byte" />
+        <field name="Leg1ID" type="Short" />
+        <field name="Leg2ID" type="Short" />
+        <field name="Leg3ID" type="Short" />
+        <field name="Leg1Size" type="Int" />
+        <field name="Leg2Size" type="Int" />
+        <field name="Leg3Size" type="Int" />
+        <field name="UnderlyingID" type="Short" />
+        <field name="ReferencePrice" type="Price" />
+    </msg>
+
+    <msg name="Order" id="O">
+        <field name="OrderID" type="Int" />
+        <field name="Buy" type="Bool" />
+        <field name="SecurityID" type="Short" />
+        <field name="Qty" type="Qty" />
+        <field name="Price" type="Price" />
+        <field name="ClOrdID" type="String" />
+        <field name="TraderID" type="Short" />
+        <field name="IOC" type="Bool" />
+        <field name="ExternalOrderID" type="Int" />
+        <field name="InBook" type="Bool" />
+    </msg>
+
+    <msg name="ClientOrderReject" id="P">
+        <field name="Trader" type="String" />
+        <field name="Buy" type="Bool" />
+        <field name="ClOrdID" type="String" />
+        <field name="Text" type="String" />
+        <field name="Reason" type="Char" />
+        <field name="Security" type="String" />
+    </msg>
+
+    <msg name="OrderReject" id="Q">
+        <field name="TraderID" type="Short"  />
+        <field name="Buy" type="Bool" />
+        <field name="ClOrdID" type="String" />
+        <field name="Text" type="String" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+        <field name="SecurityID" type="Short" />
+    </msg>
+
+    <msg name="Cancel" id="X">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+    </msg>
+
+    <msg name="ClientCancelReplaceReject" id="Y">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+        <field name="Text" type="String" />
+        <field name="IsReplace" type="Bool" />
+        <field name="Reason" type="Char" />
+    </msg>
+
+    <msg name="CancelReplaceReject" id="Z">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+        <field name="Text" type="String" />
+        <field name="IsReplace" type="Bool" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+    </msg>
+
+    <msg name="Replace" id="U">
+        <field name="OrderID" type="Int" />
+        <field name="Qty" type="Qty" />
+        <field name="Price" type="Price" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+        <field name="ExternalOrderID" type="Int" />
+        <field name="InBook" type="Bool" />
+    </msg>
+
+    <msg name="Fill" id="F">
+        <field name="OrderID" type="Int" />
+        <field name="Qty" type="Qty" />
+        <field name="Price" type="Price" />
+        <field name="MatchID" type="Int" />
+        <field name="LastFill" type="Bool" />
+        <field name="Passive" type="Bool" />
+        <field name="InBook" type="Bool" />
+    </msg>
+
+    <msg name="Inbound" id="I">
+        <field name="FixMsgType" type="Char" />
+        <field name="BeginSeqNo" type="Int" />
+        <field name="EndSeqNo" type="Int" />
+        <field name="ReqID" type="String" />
+        <field name="SecurityID" type="Short" />
+    </msg>
+
+    <msg name="Outbound" id="J">
+        <field name="FixMsgType" type="Char" />
+        <field name="ReqID" type="String" />
+        <field name="Text" type="String" />
+        <field name="RefMsgType" type="Char" />
+        <field name="RefSeqNum" type="Int" />
+        <field name="RefTagID" type="Short" alias="BusinessRejRefID" />
+        <field name="SessionRejectReason" type="Char" alias="BusinessRejectReason" />
+    </msg>
+
+    <msg name="Quote" id="D">
+        <field name="SecurityID" type="Short" />
+        <field name="BidPrice" type="Price" />
+        <field name="OfferPrice" type="Price" />
+        <field name="VenueCode" type="Char" enum="Venue" />
+        <field name="SourceTimestamp" type="Timestamp" />
+    </msg>
+
+    <msg name="MiscReject" id="M">
+        <field name="RejectedMsgType" type="Char" />
+        <field name="RejectReason" type="Char" enum="MiscRejectReason" />
+    </msg>
+
+    <enum name="Venue">
+        <key name="InteractiveData" value="I" />
+        <key name="Bloomberg" value="B" />
+    </enum>
+
+    <enum name="SystemEvent">
+        <key name="Open" value="O" />
+        <key name="Close" value="C" />
+    </enum>
+
+    <enum name="SecurityType">
+        <key name="TreasuryNote" value="N" />
+        <key name="TreasuryBond" value="B" />
+
+        <key name="DiscreteSpread" value="S" />
+        <key name="DiscreteButterfly" value="T" />
+        <key name="Roll" value="R" />
+        <key name="WhenIssued" value="W" />
+    </enum>
+
+    <enum name="MiscRejectReason">
+        <key name="InvalidBidPrice" value="B" />
+        <key name="InvalidVenue" value="D" />
+        <key name="LockedMarket" value="L" />
+        <key name="InvalidSecurityID" value="S" />
+        <key name="InvalidOfferPrice" value="O" />
+    </enum>
+
+    <enum name="OrderRejectReason">
+        <key name="AccountDisabled" value="A" />
+        <key name="TraderDisabled" value="B" />
+        <key name="SecurityDisabled" value="C" />
+        <key name="InvalidTrader" value="D" />
+        <key name="InvalidAccount" value="E" />
+        <key name="InvalidSecurity" value="F" />
+        <key name="InvalidContributor" value="H" />
+        <key name="InvalidContributorSequence" value="I" />
+
+        <key name="TradingSystemClosed" value="J" />
+        <key name="TradingSystemNotAcceptingOrders" value="K" />
+
+        <key name="UnknownOrderID" value="L" />
+        <key name="InvalidPrice" value="M" />
+        <key name="InvalidQuantity" value="N" />
+        <key name="GUIRiskViolation" value="O" />
+        <key name="InvalidSide" value="P" />
+
+    </enum>
+</core>

@@ -1,0 +1,16 @@
+package $package;
+
+public interface ${prefix}${msg.name}Command extends ${msg.extends}Command {
+  #if 'Common' not in $msg.name
+    void copy(${prefix}${msg.name}Event cmd);
+  #end if
+    ${prefix}${msg.name}Event toEvent();
+  #for $field in $msg.fields
+    #if not $msg.extends or not $field.common
+
+    #for $set in $field.setters:
+    void set${field.name}${set.name}($set.type val);
+    #end for
+    #end if
+  #end for
+}

@@ -1,0 +1,75 @@
+a, a:hover, a:visited {
+	color: black;
+}
+
+th a, th a:hover, th a:visited {
+	color: White;
+	cursor: pointer;
+}
+
+table, tr, td, th { 
+	border-collapse: collapse; 
+}
+
+table, tr, th {
+	border: 1px solid black;
+}
+
+tr:nth-child(even) {
+	background: #EEE;
+}
+tr:nth-child(odd) {
+	background: #FFF;
+}
+
+th {
+	background: rgb(12, 89, 153);
+	color: #FFF;
+}
+td, th {
+	padding: 3px 8px 3px 8px; 
+	text-align: center;
+}
+
+[animate-on-change] {
+  transition: all 1s;
+  -webkit-transition: all 1s;
+}
+
+[animate-on-change].changed {
+  background-color: #ffff99;
+  transition: none;
+  -webkit-transition: none;
+}
+
+.topbar {
+	background-color: rgb(12, 89, 153);
+	color: White;
+	margin-bottom: 20px;
+	padding-left: 10px;
+}
+
+.topbar a {
+	color: White;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.tab {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.selected {
+	border: 2px solid White;
+}

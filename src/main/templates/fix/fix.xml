@@ -1,0 +1,228 @@
+<core prefix="Fix" 
+      package="com.core.fix.msgs" 
+      srcDir="../../java/com/core/fix/msgs/"
+      testDir="../../../test/java/com/core/fix/msgs/">
+<tags>
+   <tag id="1"   type="String" name="Account" />
+   <tag id="6"   type="Number" name="AvgPx" />
+   <tag id="7"   type="Number" name="BeginSeqNo" />
+   <tag id="8"   type="String" name="BeginString" />
+   <tag id="9"   type="Number" name="BodyLength" />
+   <tag id="10"  type="Number" name="CheckSum" />
+   <tag id="11"  type="String" name="ClOrdID" />
+   <tag id="12"  type="Number" name="Commission" />
+   <tag id="13"  type="Char" name="CommissionType">
+      <enum name="Absolute" value="3" />
+   </tag>
+   <tag id="14"  type="Number" name="CumQty" />
+   <tag id="15" type="String" name="Currency" />
+   <tag id="16"  type="Number" name="EndSeqNo" />
+   <tag id="17"  type="Number" name="ExecID" />
+   <tag id="20"  type="Char"   name="ExecTransType">
+      <enum name="New"    value="0" />
+      <enum name="Status" value="3" />
+   </tag>
+   <tag id="21"  type="Char"   name="HandlInst" />
+   <tag id="22"  type="Char"   name="SecurityIDSource">
+      <enum name="CUSIP"  value="1" />
+   </tag>
+   <tag id="31"  type="Number" name="LastPx" />
+   <tag id="32"  type="Number" name="LastShares" />
+   <tag id="34"  type="Number" name="MsgSeqNum" />
+   <tag id="35"  type="Char"   name="MsgType" />
+   <tag id="36"  type="Number" name="NewSeqNo" />
+   <tag id="37"  type="Number" name="OrderID" />
+   <tag id="38"  type="Number" name="OrderQty" />
+   <tag id="39"  type="Char"   name="OrdStatus">
+      <enum name="New"             value="0" />
+      <enum name="PartiallyFilled" value="1" />
+      <enum name="Filled"          value="2" />
+      <enum name="Canceled"        value="4" />
+      <enum name="Replaced"        value="5" />
+      <enum name="Rejected"        value="8" />
+   </tag>
+   <tag id="40"  type="Char"   name="OrdType">
+      <enum name="Limit" value="2" />
+   </tag>
+   <tag id="41"  type="String" name="OrigClOrdID" />
+   <tag id="43"  type="Char"   name="PossDupFlag" />
+   <tag id="44"  type="Number" name="Price" />
+   <tag id="45"  type="Number" name="RefSeqNum" />
+   <tag id="48"  type="String" name="SecurityID" />
+   <tag id="49"  type="String" name="SenderCompID" />
+   <tag id="52"  type="Time"   name="SendingTime" />
+   <tag id="54"  type="Char"   name="Side">
+      <enum name="Buy"  value="1" />
+      <enum name="Sell" value="2" />
+   </tag>
+   <tag id="55"  type="String" name="Symbol" />
+   <tag id="56"  type="String" name="TargetCompID" />
+   <tag id="58"  type="String" name="Text" />
+   <tag id="59"  type="Char"   name="TimeInForce">
+      <enum name="Day" value="0" />
+      <enum name="IOC" value="3" />
+   </tag>
+   <tag id="60"  type="Time"   name="TransactTime" />
+   <tag id="64"  type="Date"   name="SettlementDate" />
+   <tag id="75"  type="Date"   name="TradeDate" />
+   <tag id="98"  type="Char"   name="EncryptMethod" />
+   <tag id="102" type="Char"   name="CxlRejectReason">
+      <enum name="TooLateToCancel" value="0" /> 
+      <enum name="UnknownOrder"    value="1" /> 
+      <enum name="BrokerOption"    value="2" /> 
+      <enum name="Pending"         value="3" />
+      <enum name="RiskChecks"      value="4" />
+   </tag>
+   <tag id="108" type="Number" name="HeartBtInt" />
+   <tag id="110" type="Number" name="MinQty" />
+   <tag id="111" type="Number" name="MaxFloor" />
+   <tag id="112" type="String" name="TestReqID" />
+   <tag id="118" type="Number" name="NetMoney" />
+   <tag id="122" type="Time"   name="OrigSendingTime" />
+   <tag id="123" type="Char"   name="GapFillFlag" />
+   <tag id="141" type="Char" name="ResetSeqNumFlag" />
+   <tag id="146" type="Number" name="NoRelatedSym" />
+   <tag id="150" type="Char"   name="ExecType">
+      <enum name="New"         value="0" />
+      <enum name="PartialFill" value="1" />
+      <enum name="Fill"        value="2" />
+      <enum name="Canceled"    value="4" />
+      <enum name="Replace"     value="5" />
+      <enum name="Rejected"    value="8" />
+      <enum name="Trade"       value="F" />
+      <enum name="OrderStatus" value="I" />
+   </tag>
+   <tag id="151" type="Number" name="LeavesQty" />
+   <tag id="167" type="String" name="SecurityType">
+      <!--enum name="TreasuryBond"                       value="TBOND" />
+      <enum name="TreasuryNote"                       value="TNOTE" />
+      <enum name="TreasuryBill"                       value="TBILL" />
+      <enum name="TreasuryInflationProtectedSecurity" value="TIPS" />
+      <enum name="TreasuryPrincipalStrip"             value="TPRN" />
+      <enum name="TreasuryInterestStrip"              value="TINT" /-->
+   </tag>
+   <tag id="223" type="Number" name="CouponRate" />
+   <tag id="262" type="String" name="MDReqID" />
+   <tag id="263" type="Char"   name="SubscriptionRequestType">
+      <enum name="SnapshotAndUpdate" value="1" />
+   </tag>
+   <tag id="264" type="Number" name="MarketDepth" />
+   <tag id="265" type="Char"   name="MDUpdateType">
+      <enum name="IncrementalRefresh" value="1" />
+   </tag>
+   <tag id="267" type="Number" name="NoMDEntryTypes" />
+   <tag id="268" type="Number" name="NoMDEntries" />
+   <tag id="269" type="Char"   name="MDEntryType">
+      <enum name="Bid"   value="0" />
+      <enum name="Offer" value="1" />
+      <enum name="Trade" value="2" /> 
+   </tag>
+   <tag id="270" type="Number" name="MDEntryPx" />
+   <tag id="271" type="Number" name="MDEntrySize" />
+   <tag id="273" type="Number" name="MDEntryTime" />
+   <tag id="278" type="String" name="MDEntryID" />
+   <tag id="279" type="Char"   name="MDUpdateAction">
+      <enum name="New"    value="0" />
+      <enum name="Change" value="1" />
+      <enum name="Delete" value="2" />  
+   </tag>
+   <tag id="320" type="String" name="SecurityReqID" />
+   <tag id="322" type="String" name="SecurityResponseID" />
+   <tag id="371" type="Number" name="RefTagID" />
+   <tag id="372" type="Char"   name="RefMsgType" />
+   <tag id="373" type="Char"   name="SessionRejectReason">
+      <enum name="InvalidTagNumber" value="0" />
+      <enum name="RequiredTagMissing" value="1" />
+      <enum name="TagNotDefinedForThisMsgType" value="2" />
+      <enum name="UndefinedTag" value="3" />
+      <enum name="TagSpecifiedWithoutAValue" value="4" />
+      <enum name="ValueIsIncorrectForThisTag" value="5" />
+      <enum name="IncorrectDataFormatForValue" value="6" />
+      <enum name="CompIDProblem" value="9" />
+      <enum name="SendingTimeAccuracyProblem" value="A" />
+      <enum name="InvalidMsgType" value="B" />
+   </tag>
+   <tag id="379" type="Number" name="BusinessRejRefID" />
+   <tag id="380" type="Char"   name="BusinessRejectReason">
+      <enum name="Other" value="0" />
+      <enum name="UnknownID" value="1" />
+      <enum name="UnknownSecurity" value="2" />
+      <enum name="UnsupportedMessageType" value="3" />
+      <enum name="ApplicationNotAvailable" value="4" />
+      <enum name="ConditionallyReqMissingField" value="5" />
+   </tag>
+   <tag id="393" type="Number" name="TotNoRelatedSym" />
+   <tag id="434" type="Char"   name="CxlRejResponseTo">
+      <enum name="OrderCancelRequest"        value="1" />
+      <enum name="OrderCancelReplaceRequest" value="2" />
+   </tag>
+   <tag id="447" type="String" name="PartyIDSource">
+      <enum name="ProprietaryCode" value="D" />
+   </tag>
+   <tag id="448" type="String" name="PartyID" />
+   <tag id="452" type="String" name="PartyRole">
+      <enum name="OrderOriginationTrader" value="1" />
+   </tag>
+   <tag id="453" type="Number" name="NoPartyIDs" />
+   <tag id="487" type="Char" name="TradeReportTransType">
+      <enum name="New" value="0" />
+   </tag>
+   <tag id="541" type="Date"   name="MaturityDate" />
+   <tag id="552" type="Char"   name="NoSides">
+      <enum name="OneSide"   value="1" />
+      <enum name="BothSides" value="2" />
+   </tag>
+   <tag id="559" type="Char"   name="SecurityListRequestType">
+      <enum name="Symbol" value="0" />
+   </tag>
+   <tag id="560" type="Char"   name="SecurityRequestResult">
+      <enum name="ValidRequest"   value="0" />
+      <enum name="InvalidRequest" value="1" />
+   </tag>
+   <tag id="570" type="Char" name="PreviouslyReported">
+      <enum name="Yes" value="Y" />
+      <enum name="No"  value="N" />
+   </tag>
+   <tag id="571" type="String" name="TradeReportID" />
+   <tag id="576" type="Number" name="NoClearingInstructions" />
+   <tag id="577" type="Char" name="ClearingInstruction">
+      <enum name="ProcessNormally" value="0" />
+      <enum name="MultilateralNetting" value="5" />
+   </tag>
+   <tag id="856" type="Char" name="TradeReportType">
+      <enum name="Submit" value="0" />
+   </tag>
+   <tag id="893" type="Char"   name="LastFragment">
+      <enum name="Yes" value="Y" />
+      <enum name="No"  value="N" />
+   </tag>
+</tags>
+
+<msgs>
+   <msg type="0" use="io" name="Heartbeat" />
+   <msg type="1" use="io" name="TestRequest" />
+   <msg type="2" use="io" name="ResendRequest" />
+   <msg type="3" use="io" name="Reject" />
+   <msg type="4" use="io" name="SequenceReset" />
+   <msg type="5" use="io" name="Logout" />
+   <msg type="8" use="io"  name="ExecutionReport" />
+   <msg type="9" use="o"  name="OrderCancelReject" />
+
+   <msg type="c" use="i"  name="SecurityDefinitionRequest" />
+   <msg type="d" use="o"  name="SecurityDefinition" />
+   <msg type="e" use="i"  name="SecurityStatusRequest" />
+   <msg type="f" use="o"  name="SecurityStatus" />
+
+   <msg type="A" use="io" name="Logon" />
+   <msg type="D" use="i"  name="NewOrderSingle" />
+   <msg type="F" use="i"  name="OrderCancelRequest" />
+   <msg type="G" use="i"  name="OrderCancelReplaceRequest" />
+   <msg type="V" use="io"  name="MarketDataRequest" />
+   <msg type="W" use="io"  name="MarketDataSnapshot" />
+   <msg type="X" use="io"  name="MarketDataIncrementalRefresh" />
+   <msg type="Y" use="io"  name="MarketDataRequestReject" />
+   <msg type="j" use="io"  name="BusinessReject" />
+   <msg type="x" use="io"  name="SecurityListRequest" />
+   <msg type="y" use="io"  name="SecurityList" />
+</msgs>
+</core>

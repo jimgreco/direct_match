@@ -1,0 +1,136 @@
+apply plugin: 'idea'
+apply plugin: 'distribution'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.saliman:gradle-cobertura-plugin:2.4.0"
+    }
+}
+apply plugin: 'net.saliman.cobertura'
+
+group = 'directmatch'
+version = "1"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+sourceSets {
+    intTest {
+        java {
+            srcDir 'src/integration-test/java'
+        }
+        resources {
+            srcDir 'src/integration-test/resources'
+        }
+        compileClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+task intTest(type: Test) {
+    description="Runs all INTEGRATION tests"
+
+    useJUnit {
+        testClassesDir = sourceSets.intTest.output.classesDir
+        classpath += sourceSets.intTest.runtimeClasspath
+    }
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-simple:1.6.1'
+    compile 'com.goldmansachs:gs-collections:5.1.0'
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.4'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.4'
+    compile 'commons-net:commons-net:3.3'
+    compile 'org.mariadb.jdbc:mariadb-java-client:1.3.7'
+    compile 'org.quickfixj:quickfixj-core:1.6.2'
+    compile 'org.quickfixj:quickfixj-messages-fix44:1.6.2'
+
+    testCompile 'org.mockito:mockito-all:1.10.8'
+    testCompile 'junit:junit:4.12'
+    testRuntime 'org.slf4j:slf4j-api:1.7.21'
+
+    intTestCompile 'junit:junit:4.12'
+    intTestRuntime 'org.apache.mina:mina-core:2.0.9'
+    intTestRuntime 'org.slf4j:slf4j-api:1.7.21'
+    intTestRuntime 'org.slf4j:slf4j-jdk14:1.7.21'
+}
+
+test {
+    useJUnit {
+        excludeCategories 'com.core.util.udp.WritableUDPSocket'
+    }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Direct Match',
+                'Implementation-Version': version, 
+		'Main-Class': 'com.core.app.Main'
+    }
+
+    baseName 'directmatch'
+}
+
+task createGitCommitHashFile {
+	def gitCommitHashFile = new File("$buildDir/output/" + System.getenv('GIT_COMMIT') + ".txt")
+	outputs.file(gitCommitHashFile)
+
+	doLast {
+		gitCommitHashFile.getParentFile().mkdirs()
+		gitCommitHashFile.createNewFile()
+	}
+	
+	onlyIf {
+		System.getenv('GIT_COMMIT') != null
+	}
+}
+
+task createDistribution(dependsOn: [createGitCommitHashFile, jar]) {
+	doLast {
+		copy {
+			into "$buildDir/output/"
+	  		from jar
+		}
+
+		copy {
+			into "$buildDir/output/web"
+	  		from "src/main/web"
+		}
+		
+		copy {
+			into "$buildDir/output/dependencies/"
+			from configurations.runtime
+		}
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId 'directmatch'
+			artifactId 'main'
+			version '1.0.0-SNAPSHOT'
+
+			from components.java
+		}
+	}
+}
+
+cobertura {
+	coverageIgnoreTrivial = true
+	coverageFormats = ['xml']
+}
+

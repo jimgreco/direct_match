@@ -1,0 +1,49 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+	})
+	
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		CORE_URL = '@model.url';
+		CANCEL_URL = '@model.cancelUrl';
+		CONTROL_URL = '@model.controlUrl';
+		</script>
+		<script src="/cancel.js"></script>
+		<script src="/risk.js"></script>
+	})
+	
+	@html.block('content', function(model) {
+		<div ng-controller="AccountDataController" class="container">
+		<table>
+			<thead>
+				<th>Account</th>
+				<th>Trader</th>
+				<th>QtySent</th>
+				<th>QtyOut</th>
+				<th>QtyExec</th>
+				<th>Rejects</th>
+				<th>Orders</th>
+				<th>Cancels</th>
+				<th>Replaces</th>
+				<th>FatFinger</th>
+				<th>Actions</th>
+			</thead>
+			<tbody ng-repeat="item in data">
+		      	<tr>
+	                <td>{{item.acct}}</td>
+	                <td>{{item.trad}}</td>
+		      		<td>{{item.sendQ}}</td>
+		      		<td>{{item.outStdingQ}}</td>
+		      		<td>{{item.fillQ}}</td>
+		      		<td>{{item.rejsN}}</td>
+		      		<td>{{item.ordrN}}</td>
+		      		<td>{{item.cnlsN}}</td>
+		      		<td>{{item.crplN}}</td>
+		      		<td>{{item.ffQtyLmt}}</td>
+					<td><button ng-click="cancel('Trader', item, 'trad')">Cxl</button><button ng-click="enable('Trader', item, 'trad')">En</button><button ng-click="disable('Trader', item, 'trad')">Dis</button></td>
+		      	</tr>
+		    </tbody>
+		</table>
+	</div>
+	})
+})

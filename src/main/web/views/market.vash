@@ -1,0 +1,144 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+		<link rel="stylesheet" href="/market-data.css">
+	})
+	
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		DATA_URL = '@model.url';
+		</script>		
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.js"></script>
+		<script src="http://d3js.org/d3.v3.min.js"></script>
+		<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+		
+		<script src="/market.js"></script>
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	})
+	
+	@html.block('content', function(model) {
+	<div class="container">
+		<div class="dropdown">
+			<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"> 2Y YEARS </button>
+			<ul class="dropdown-menu">
+
+			</ul>
+		</div>
+
+		<div class="histogram" >
+			<script>
+
+			//define the security and data
+			var sec = "2Y";
+			var data = [];
+			var m = ($(window).width() - 1260 )/2 ;
+			//define the size of the chart
+			var margin = {top: 40, right: m, bottom: 30, left: m},
+			    width = 1260,
+			    height = 500 - margin.top - margin.bottom;
+			
+			//define the x and y axis
+			var x = d3.scale.ordinal()
+			    .rangeRoundBands([0, width], .2);
+			var y = d3.scale.linear()
+			    .range([height, 0]);
+			var xAxis = d3.svg.axis()
+			    .scale(x)
+			    .orient("bottom");
+			var yAxis = d3.svg.axis()
+			    .scale(y)
+			    .orient("left");
+			   
+			//define the tip of the data   
+			var tip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .offset([-10, 0])
+			  .html(function(d) {
+			    return "<strong>quantity:</strong> <span style='color:yellow'>" + d.qty + "</span>";
+			  });
+
+			//draw the chart  
+			var svg = d3.select("body").append("svg")
+			    .attr("width", width + margin.left + margin.right)
+			    .attr("height", height + margin.top + margin.bottom)
+			  	.append("g")
+			    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			svg.call(tip);
+
+			//draw x axis
+			svg.append("g")
+			    .attr("class", "x axis")
+			    .attr("transform", "translate(0," + height + ")")
+			    .call(xAxis);
+
+			//draw y axis 
+			svg.append("g")
+			    .attr("class", "y axis")
+			    .call(yAxis)
+			  .append("text")
+			    .attr("transform", "rotate(-90)")
+			    .attr("y", 6)
+			    .attr("dy", ".71em")
+			    .style("text-anchor", "end")
+			    .text("quantity");
+
+			//set the time interval to redraw the chart
+			setInterval(function() {
+					redraw();
+			}, 1500);
+
+			//draw the histogram
+			function redraw(){
+				data = cache['bid'+sec].concat();
+				data = data.reverse();
+				data = data.concat(cache['ask'+sec]);
+
+		       	svg.selectAll("rect")
+			    .data(data)
+			    .enter()
+				.append("rect")
+				.attr("class", "bar")
+			    .on('mouseover', tip.show)
+			    .on('mouseout', tip.hide);
+
+				x.domain(data.map(function(d) { return d.px; }));
+				y.domain([0, d3.max(data, function(d) { return d.qty; })]);
+
+				svg.selectAll("g.x.axis")
+			    .attr("class", "x axis")
+			    .attr("transform", "translate(0," + height + ")")
+			    .call(xAxis);
+
+			    svg.selectAll("g.y.axis")
+			    .attr("class", "y axis")
+			 	.call(yAxis)
+			    .attr("y", 6)
+
+				svg.selectAll("rect")
+				.data(data)
+			    .attr("class", "bar")
+		        .transition()
+		        .delay(function(d,i){return  i/data.length*1000; })
+		        .duration(100)
+		        .ease("linear")
+			    .attr("x", function(d) { return x(d.px); })
+			    .attr("width", x.rangeBand())
+			    .attr("y", function(d) { return y(d.qty); })
+			    .attr("height", function(d) { return height - y(d.qty); })
+			    .style("fill", function(d) { return d.side == "ask" ? "FF6666" : "#C4DFA5";});
+			}
+
+			//choose security
+			$(".dropdown-menu").on('click', 'a' , function(event){
+			    sec = $(event.target).attr('class');
+			    console.log(sec);
+			    $("button").text(sec + " Years");
+			    redraw();
+			});
+
+			</script>
+		</div>
+	</div>
+	})
+})

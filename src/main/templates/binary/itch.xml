@@ -1,0 +1,80 @@
+<core prefix="ITCH" 
+      package="com.core.match.itch.msgs" 
+      timestampOffset="3"
+      msgTypeOffset="0"
+      types="types.xml">
+    <msg name="Common" id=".">
+        <field name="MsgType" type="Char" />
+        <field name="SecurityID" type="Short" />
+        <field name="Timestamp" type="Timestamp" />
+    </msg>
+
+    <msg name="System" id="S">
+        <field name="EventCode" type="Char" />
+    </msg>
+
+    <msg name="Security" id="R">
+        <field name="Name" type="RightPaddedFixedString" length="12" />
+        <field name="SecurityType" type="Char" />
+        <field name="Coupon" type="Price" />
+        <field name="MaturityDate" type="Date" />
+        <field name="SecurityReference" type="RightPaddedFixedString" length="12" />
+        <field name="SecurityReferenceSource" type="Char" />
+
+        <!--field name="NumLegs" type="Short" />
+        <field name="Leg1ID" type="Short" />
+        <field name="Leg2ID" type="Short" />
+        <field name="Leg3ID" type="Short" /-->
+    </msg>
+
+    <msg name="Order" id="A">
+        <field name="OrderID" type="Int" />
+        <field name="Side" type="Char" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Price" type="Price" />
+    </msg>
+
+    <msg name="OrderCancel" id="X">
+        <field name="OrderID" type="Int" />
+        <field name="QtyCanceled" type="QtyExternal" />
+    </msg>
+
+    <msg name="OrderExecuted" id="E">
+        <field name="OrderID" type="Int" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Price" type="Price" />
+        <field name="MatchID" type="Int" />
+    </msg>
+
+    <msg name="Trade" id="P">
+        <field name="OrderID" type="Int" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Price" type="Price" />
+        <field name="MatchID" type="Int" />
+    </msg>
+
+    <enum name="EventCode">
+        <key name="StartOfTradingSession" value="S" />
+        <key name="EndOfTradingSession" value="E" />
+    </enum>
+
+    <enum name="Side">
+        <key name="Buy" value="B" />
+        <key name="Sell" value="S" />
+    </enum>
+
+    <enum name="SecurityType">
+        <key name="TreasuryNote" value="N" />
+        <key name="TreasuryBond" value="B" />
+
+        <key name="DiscreteSpread" value="S" />
+        <key name="DiscreteButterfly" value="T" />
+        <key name="Roll" value="R" />
+        <key name="WhenIssued" value="W" />
+    </enum>
+
+    <enum name="SecuritySource">
+        <key name="CUSIP" value="1" />
+        <key name="Synthetic" value="2" />
+    </enum>
+</core>

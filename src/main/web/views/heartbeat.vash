@@ -1,0 +1,68 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+		<link rel="stylesheet" href="/heartbeat.css">
+
+	})
+	
+	@html.block('js', function(model) {
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.min.js"></script>
+		<script src="/angular-ui.min.js"></script>
+		<script type="text/javascript">
+		CORE_URL = '@model.url';
+		</script>		
+		<script src="/heartbeat.js"></script>
+	})
+	
+	@html.block('content', function(model) {
+			
+		<div class="container" ng-controller="cookiesController" style="width:100%">		
+			<table class = "" ng-controller ="hbController" >
+				<thead>
+				
+				<tr>
+					<td>Search_:</td>
+					<td><input ng-model="query" /></td>
+					<td> <button ng-click="add('all', flag)"> refreash </button></td>
+					
+				</tr>  
+				
+				</thead>
+				
+
+				<tr ui:sortable="" ng:model="keys">
+					
+					<td class = "Atcive"> Active </td>
+					<td class = "{{key}}" ng-repeat="key in keys" ng-hide = "flag[key] "> <button ng-click="add(key, flag)"> {{key}} </button></td> 
+				</tr>
+
+				<tbody ng-if = "!query">
+				<tr class = " column" ng-repeat="i in [] | range : myData">
+				
+					<td class = "Atcive" ng-style = "myData[i]['Active'] == 'False' ? {'color':'#00bfff'} : {'color':'green'} "> {{myData[i]['Active']}} </td>
+					<td class = "{{key}}" animate-on-change="myData[i][key]" ng-hide= "flag[key]" ng-repeat = "key in keys" ng-style = "myData[i]['LoggedIn'] == 'False' ? {'color':'red'} : {'color':'green'}  "> {{myData[i][key]}}</td>
+				</tr>
+
+				<tr>
+				<td ng-repeat="key in keys" ng-show = "flag[key] "> <button ng-click="remove(key, flag)"> {{key}} </button></td>
+				</tr> 
+
+				</tbody>
+
+				<tbody ng-if = "query">
+				<tr class = " column" ng-repeat="row in myData | filter : query">
+					
+					<td class = "Atcive" ng-style = " row['Active'] == 'False' ? {'color':'#00bfff'} : {'color':'green'} "> {{row['Active']}} </td>
+					<td class = "{{key}}" animate-on-change="row[key]" ng-repeat = "key in keys " ng-hide= "flag[key]" ng-style = "row['LoggedIn'] == 'False' ? {'color':'red'} : {'color':'green'} "> {{row[key]}}</td>
+				</tr>
+				
+				<tr>
+				<td ng-repeat="key in keys" ng-show = "flag[key] == true"> <button ng-click="remove(key, flag)"> {{key}} </button></td>
+				</tr> 
+				
+				</tbody>
+			
+			</table>
+		</div>
+	})
+})

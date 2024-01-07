@@ -1,0 +1,143 @@
+package ${package};
+
+import java.nio.ByteBuffer;
+
+public class ${prefix}${msg.name}ByteBufferMessage implements 
+	${prefix}${msg.name}Event, 
+	${prefix}${msg.name}Command {
+    private static final int DEFAULT_LENGTH = ${msg.length};
+    private static final byte[] EMPTY = new byte[DEFAULT_LENGTH];
+     
+    static {
+        java.util.Arrays.fill(EMPTY, com.core.util.MessageUtils.NULL_BYTE);
+    }
+   
+    private ByteBuffer buffer;
+    private int stringsBlockLength;
+
+    @Override
+    public int getLength() {
+       return DEFAULT_LENGTH + stringsBlockLength;
+    }
+	
+    @Override
+    public void setLength(int length) {
+        stringsBlockLength = (length - DEFAULT_LENGTH);
+    }
+
+    @Override
+    public ByteBuffer getRawBuffer() {
+       return buffer;
+    }
+
+    @Override 
+    public void copy(${prefix}${msg.name}Event cmd) {
+      #for $field in $msg.fields
+        set${field.name}(cmd.get${field.name}());
+      #end for
+    }
+
+    @Override
+    public ${prefix}${msg.name}Event toEvent() {
+        return this;
+    }
+
+    @Override
+    public ${prefix}${msg.name}Command toCommand() {
+        return this;
+    }
+
+    @Override
+    public String getMsgName() {
+        return "${msg.name}";
+    }
+ 
+    public ${prefix}${msg.name}Command wrapCommand(ByteBuffer buf) {
+        buffer = buf;
+        buffer.mark();
+        buffer.put(EMPTY);
+        buffer.reset();
+        setMsgType('${msg.id}');
+        stringsBlockLength = 0;
+        return this;
+    }
+
+    public ${prefix}${msg.name}Event wrapEvent(ByteBuffer buf) {
+        buffer = buf;
+		setLength(buffer.remaining());
+        return this;
+    }
+#for $field in $msg.fields
+  #for $get in $field.getters
+
+     @Override
+     public $get.type get${field.name}${get.name}() {
+	 #if $field.bytes == 'variable'
+		 return ${get.call}(buffer, Offsets.${field.name});
+	 #elif $field.bytes == 'fixed'
+	     return ${get.call}(buffer, Offsets.${field.name}, Lengths.${field.name});
+	 #elif $field.bytes == 'primitive' 
+         return ${get.call}(buffer, Offsets.${field.name});  	 
+	 #elif $field.bytes == 'end'
+		 return ${get.call}(buffer, Offsets.${field.name}, getLength() - Offsets.${field.name});
+     #end if
+     }
+  #end for
+  #for $set in $field.setters
+
+    @Override
+    public void set${field.name}${set.name}($set.type value) {
+	#if $field.bytes == 'variable'
+    	stringsBlockLength += ${set.call}(buffer, Offsets.${field.name}, value, getLength());  			
+	#elif $field.bytes == 'end'
+		stringsBlockLength += ${set.call}(buffer, Offsets.${field.name}, value);  			
+	#elif $field.bytes == 'fixed'
+    	${set.call}(buffer, Offsets.${field.name}, value, Lengths.${field.name});  						
+	#elif $field.bytes == 'primitive'
+    	${set.call}(buffer, Offsets.${field.name}, value);  									
+	#end if
+    }
+  #end for
+
+    @Override
+    public boolean has${field.name}() {
+	#if $field.bytes == 'variable'	
+		return com.core.util.MessageUtils.doesFieldExist(buffer, Offsets.${field.name}, Lengths.${field.name}) && get${field.name}Length() > 0;  
+	#else
+        return com.core.util.MessageUtils.doesFieldExist(buffer, Offsets.${field.name}, Lengths.${field.name});  
+	#end if
+    }
+#end for
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Msg=${msg.name}");
+    #for $field in $msg.fields
+        builder.append(",${field.name}=");
+        if (has${field.name}()) {
+	#if $field.enum	   
+            builder.append(${prefix}Constants.${field.enum}.toString(get${field.printer}()));
+	#else
+            builder.append(get${field.printer}());
+	#end if
+        }
+        else {
+            builder.append("<NULL>");
+        }
+    #end for
+        return builder.toString();        
+    }
+
+    private static class Offsets {
+	#for $field in $msg.fields
+        static int ${field.name} = ${field.offset};
+	#end for
+    }
+	
+    private static class Lengths {
+	#for $field in $msg.fields
+        static int ${field.name} = ${field.length};
+	#end for
+    }
+} 

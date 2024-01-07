@@ -1,0 +1,131 @@
+package ${package};
+
+import com.core.app.AppConstructor;
+import com.core.app.Exposed;
+import com.core.app.Param;
+import com.core.connector.Connector;
+import com.core.match.services.account.Account;
+import com.core.match.services.account.AccountService;
+import com.core.match.services.contributor.Contributor;
+import com.core.match.services.contributor.ContributorService;
+import com.core.match.services.security.BaseSecurity;
+import com.core.match.services.security.SecurityService;
+import com.core.match.services.trader.Trader;
+import com.core.match.services.trader.TraderService;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
+
+public class ${prefix}Printer implements 
+  #set $sep = ''
+  #for $msg in $msgs
+	${sep}${prefix}${msg.name}Listener
+  #set $sep = ', '
+  #end for	
+{
+    private final Connector connector;
+    private final ContributorService<Contributor> contributors;
+    private final SecurityService<BaseSecurity> securities;
+    private final TraderService<Trader> traders;
+    private final AccountService<Account> accounts;
+	
+    private final boolean json;
+    private Dropper drop;
+
+    @AppConstructor
+    public ${prefix}Printer(
+			Connector connector,
+			ContributorService<Contributor> contributors,
+			SecurityService<BaseSecurity> securities,
+			TraderService<Trader> traders,
+			AccountService<Account> accounts,
+                        Dropper dropper,
+			String style) throws IOException {
+	this.connector = connector;
+        this.contributors = contributors;
+        this.securities = securities;
+        this.traders = traders;
+        this.accounts = accounts;
+		
+	this.drop = dropper;
+	this.json = style.equalsIgnoreCase("JSON");
+    }
+	
+#for $msg in $msgs	
+    @Override
+    public void on${prefix}${msg.name}(${prefix}${msg.name}Event msg) {
+        StringBuilder builder = start(msg.getMsgName());
+    #for $field in $msg.fields
+        add(builder, "${field.name}", msg.get${field.printer}());		
+	  #if "SecurityID" in $field.name
+		add(builder, "${field.name.replace('ID', '')}", msg.has${field.name}() ?  securities.get(msg.get${field.printer}()).getName() : "<UNKNOWN>");
+	  #elif "ContributorID" in $field.name
+	    add(builder, "${field.name.replace('ID', '')}", msg.has${field.name}() ? contributors.get(msg.get${field.printer}()).getName() : "<UNKNOWN>");	
+	  #elif "TraderID" in $field.name
+	    add(builder, "${field.name.replace('ID', '')}", msg.has${field.name}() ? traders.get(msg.get${field.printer}()).getName() : "<UNKNOWN>");	
+	  #elif "AccountID" in $field.name
+	    add(builder, "${field.name.replace('ID', '')}", msg.has${field.name}() ? accounts.get(msg.get${field.printer}()).getName() : "<UNKNOWN>");		    
+	  #elif $field.enum
+		add(builder, "${field.name}", ${prefix}Constants.${field.enum}.toString(msg.get${field.printer}()));		    
+	  #elif "Price" in $field.name
+		add(builder, "${field.name}", msg.get${field.name}AsDouble());
+	  	add(builder, "${field.name}32nd", msg.get${field.name}As32nd());
+	  #end if				  
+    #end for
+		end(builder);
+		write(builder);
+    }
+	
+#end for
+	private StringBuilder start(String name) {
+		StringBuilder builder = new StringBuilder();
+		if (json) {
+            builder.append("{\"Seq\":").append(connector.getCurrentSeq());
+			builder.append(",\"MsgType\":\"").append(name);
+		}
+		else {
+            builder.append("Seq=").append(connector.getCurrentSeq());
+			builder.append(",MsgType=").append(name);
+		}
+		return builder;
+	}
+	
+	private void end(StringBuilder builder) {
+		if (json) {
+			builder.append("}");
+		}
+		builder.append("\n");
+	}
+	
+	private void add(StringBuilder builder, String name, Object val) {
+            Class cls = val.getClass();
+            boolean isString = cls.equals(String.class) || cls.equals(LocalDate.class) || cls.equals(LocalTime.class) || cls.equals(LocalDateTime.class);	
+            if (json) {			
+                builder.append(",\"").append(name).append("\":");	    				
+		if (isString) {
+                    builder.append("\"");
+		}
+            }
+            else {
+                builder.append(",").append(name).append("=");
+            }
+		
+            builder.append(val);
+		
+            if (json) {
+                if (isString) {
+                    builder.append("\"");
+                }
+            }
+        }
+
+	private void write(StringBuilder builder) {
+		drop.add(builder.toString());
+	}
+    
+     public interface Dropper {
+        void add(String str);
+     }
+} 

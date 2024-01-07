@@ -1,0 +1,232 @@
+<core prefix="Route"
+      package="com.core.route.msgs"
+      timestampOffset="7"
+      msgTypeOffset="0"
+      printer="true"
+      types="types.xml"
+      extends="com.core.route.msgs.RouteCommon">
+    <constant name="STATICS_START_INDEX" value="1" type="int" final="true" />
+    <constant name="CONTRIBUTOR_NAME_LENGTH" value="10" type="int" final="true" />
+    <constant name="ACCOUNT_NAME_LENGTH" value="24" type="int" final="true" />
+    <constant name="SECURITY_NAME_LENGTH" value="24" type="int" final="true" />
+    <constant name="DESTINATION_NAME_LENGTH" value="24" type="int" final="true" />
+    <constant name="MAX_LIVE_ORDERS" value="100000" type="int" />
+    <constant name="IMPLIED_DECIMALS" value="7" type="int" />
+	
+    <msg name="Common" id="." extends="com.core.connector.CoreCommon">
+        <field name="MsgType" type="Char" />
+        <field name="ContributorID" type="Short" />
+        <field name="ContributorSeq" type="Int" />
+        <field name="Timestamp" type="Timestamp" />
+    </msg>
+
+	<!-- Statics -->
+    <msg name="Contributor" id="A">
+        <field name="SourceContributorID" type="Short" />
+        <field name="Name" type="String" />
+        <field name="CancelOnDisconnect" type="Bool"/>
+    </msg>
+
+    <msg name="Account" id="B">
+        <field name="AccountID" type="Short" />
+        <field name="Name" type="String" />
+    </msg>
+
+    <msg name="Security" id="C">
+        <field name="SecurityID" type="Int" />
+        <field name="Name" type="String" />
+        <field name="Type" type="Char" enum="SecurityType" />
+        <field name="TickSize" type="Char" enum="TickSize" />
+    </msg>
+
+    <msg name="Destination" id="D">
+        <field name="DestinationID" type="Int" />
+        <field name="Name" type="String" />
+    </msg>
+
+    <!-- Currency -->
+
+    <!-- Misc -->
+    <msg name="SystemEvent" id="E">
+        <field name="EventType" type="Char" enum="SystemEvent" />
+    </msg>
+
+    <msg name="Inbound" id="F">
+        <field name="FIXMsgType" type="Char" />
+        <field name="BeginSeqNo" type="Int" />
+        <field name="EndSeqNo" type="Int" />
+        <field name="ReqID" type="String" />
+        <field name="SecurityID" type="Int" />
+    </msg>
+
+    <msg name="Outbound" id="G">
+        <field name="FIXMsgType" type="Char" />
+        <field name="ReqID" type="String" />
+        <field name="Text" type="String" />
+        <field name="RefMsgType" type="Char" />
+        <field name="RefSeqNum" type="Int" />
+        <field name="RefTagID" type="Short" />
+        <field name="SessionRejectReason" type="Char" />
+    </msg>
+
+    <msg name="Quote" id="H">
+        <field name="SecurityID" type="Int" />
+        <field name="BidPrice" type="Price" />
+        <field name="OfferPrice" type="Price" />
+        <field name="VenueCode" type="Char" enum="Venue" />
+        <field name="SourceTimestamp" type="Timestamp" />
+    </msg>
+
+    <msg name="MiscMsgReject" id="I">
+        <field name="RejectedMsgType" type="Char" />
+        <field name="Reason" type="Char" enum="MiscRejectReason" />
+    </msg>
+
+	<!-- Orders -->
+    <msg name="SubmitOrder" id="N">
+        <field name="OrderID" type="Int" />
+        <field name="ParentID" type="Int" />
+        <field name="AccountID" type="Short" />
+        <field name="SecurityID" type="Int" />
+        <field name="DestinationID" type="Short" />
+        <field name="Side" type="Char" enum="Side" />
+        <field name="Qty" type="BigQty" />
+        <field name="Price" type="Price" />
+        <field name="ClOrdID" type="String" />
+    </msg>
+	
+	<msg name="AcceptOrder" id="O">
+		<field name="OrderID" type="Int" />
+	</msg>
+
+    <msg name="RejectOrder" id="P">
+		<field name="OrderID" type="Int" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+        <field name="Text" type="String" />	
+    </msg>
+
+    <msg name="ClientRejectOrder" id="Q">
+        <field name="OrderID" type="Int" />
+        <field name="ParentID" type="Int" />
+        <field name="Reason" type="Char" />
+        <field name="Text" type="String" />
+        <field name="Account" type="String" />
+        <field name="Side" type="Char" enum="Side" />
+        <field name="Security" type="String" />
+        <field name="ClOrdID" type="String" />
+    </msg>
+
+    <msg name="SubmitCancel" id="R">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+    </msg>
+
+    <msg name="AcceptCancel" id="S">
+        <field name="OrderID" type="Int" />
+    </msg>
+
+    <msg name="RejectCancel" id="T">
+        <field name="OrderID" type="Int" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+        <field name="Text" type="String" />
+    </msg>
+
+    <msg name="SubmitReplace" id="U">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+        <field name="Qty" type="BigQty" />
+        <field name="Price" type="Price" />
+    </msg>
+
+    <msg name="AcceptReplace" id="V">
+        <field name="OrderID" type="Int" />
+    </msg>
+
+    <msg name="RejectReplace" id="W">
+        <field name="OrderID" type="Int" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+        <field name="Text" type="String" />
+    </msg>
+
+    <msg name="ClientRejectCancelReplace" id="X">
+        <field name="OrderID" type="Int" />
+        <field name="ClOrdID" type="String" />
+        <field name="OrigClOrdID" type="String" />
+        <field name="IsReplace" type="Bool" />
+        <field name="Reason" type="Char" />
+        <field name="Text" type="String" />
+    </msg>
+
+    <msg name="Fill" id="Y">
+        <field name="OrderID" type="Int" />
+        <field name="Qty" type="BigQty" />
+        <field name="Price" type="Price" />
+        <field name="ExecID" type="String" />
+    </msg>
+
+    <msg name="OrderMsgReject" id="Z">
+        <field name="OrderID" type="Int" />
+        <field name="RejectedMsgType" type="Char" />
+        <field name="Reason" type="Char" enum="OrderRejectReason" />
+    </msg>
+
+	<!-- Enums -->
+    <enum name="Venue">
+        <key name="InteractiveData" value="I" />
+    </enum>
+
+    <enum name="SystemEvent">
+        <key name="Open" value="O" />
+        <key name="Close" value="C" />
+    </enum>
+
+    <enum name="SecurityType">
+        <key name="Equity" value="E" />
+    </enum>
+
+    <enum name="MiscRejectReason">
+        <key name="InvalidBidPrice" value="B" />
+        <key name="InvalidVenue" value="D" />
+        <key name="LockedMarket" value="L" />
+        <key name="InvalidSecurityID" value="S" />
+        <key name="InvalidOfferPrice" value="O" />
+
+        <key name="InvalidName" value="N" />
+        <key name="InvalidSecurityType" value="T" />
+        <key name="InvalidTickSize" value="Z" />
+    </enum>
+
+    <enum name="OrderRejectReason">
+        <key name="AccountDisabled" value="A" />
+        <key name="InvalidAccount" value="B" />
+
+        <key name="SecurityDisabled" value="C" />
+        <key name="InvalidSecurity" value="D" />
+
+        <key name="DestinationDisabled" value="E" />
+        <key name="InvalidDestination" value="F" />
+
+        <key name="ContributorDisabled" value="G" />
+        <key name="InvalidContributor" value="H" />
+        <key name="InvalidContributorSequence" value="I" />
+
+        <key name="InvalidPrice" value="K" />
+        <key name="InvalidQuantity" value="L" />
+        <key name="InvalidSide" value="M" />
+        <key name="InvalidStateTransition" value="N" />
+        <key name="ChildQtyCapacity" value="O" />
+        <key name="UnknownOrderID" value="P" />
+        <key name="UnknownParentID" value="Q" />
+    </enum>
+	
+	<enum name="Side">
+		<key name="Buy" value="B" />
+		<key name="Sell" value="S" />
+	</enum>
+	
+	<enum name="TickSize">
+		<key name="US_Equities_Standard" value="A" />
+	</enum>
+</core>

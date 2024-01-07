@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html ng-app="DirectMatchApp">
+	<head>
+		<title>@model.monitor: @model.core</title>
+
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/dm.css">
+		@html.block('css', function(model) {
+		<!-- Our CSS here -->
+		})
+  
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-animate.min.js"></script>
+		<script src="/dm.js"></script>
+		@html.block('js', function(model) {
+		<!-- Our Javascript here -->
+		})
+	</head>
+	<body>
+		@html.extend('main-nav', function(model) {
+		<!-- Main nav -->
+		})
+	
+		@html.block('content', function(model) {
+		<!-- Our content here -->
+		})
+	</body>	
+</html>

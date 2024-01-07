@@ -1,0 +1,57 @@
+package com.core.match.msgs;
+
+import java.nio.ByteBuffer;
+
+public interface MatchMessages {
+    MatchContributorCommand getMatchContributorCommand();
+    MatchContributorCommand getMatchContributorCommand(ByteBuffer buffer);
+    MatchContributorEvent getMatchContributorEvent(ByteBuffer buffer);
+    MatchTraderCommand getMatchTraderCommand();
+    MatchTraderCommand getMatchTraderCommand(ByteBuffer buffer);
+    MatchTraderEvent getMatchTraderEvent(ByteBuffer buffer);
+    MatchSystemEventCommand getMatchSystemEventCommand();
+    MatchSystemEventCommand getMatchSystemEventCommand(ByteBuffer buffer);
+    MatchSystemEventEvent getMatchSystemEventEvent(ByteBuffer buffer);
+    MatchAccountCommand getMatchAccountCommand();
+    MatchAccountCommand getMatchAccountCommand(ByteBuffer buffer);
+    MatchAccountEvent getMatchAccountEvent(ByteBuffer buffer);
+    MatchSecurityCommand getMatchSecurityCommand();
+    MatchSecurityCommand getMatchSecurityCommand(ByteBuffer buffer);
+    MatchSecurityEvent getMatchSecurityEvent(ByteBuffer buffer);
+    MatchOrderCommand getMatchOrderCommand();
+    MatchOrderCommand getMatchOrderCommand(ByteBuffer buffer);
+    MatchOrderEvent getMatchOrderEvent(ByteBuffer buffer);
+    MatchClientOrderRejectCommand getMatchClientOrderRejectCommand();
+    MatchClientOrderRejectCommand getMatchClientOrderRejectCommand(ByteBuffer buffer);
+    MatchClientOrderRejectEvent getMatchClientOrderRejectEvent(ByteBuffer buffer);
+    MatchOrderRejectCommand getMatchOrderRejectCommand();
+    MatchOrderRejectCommand getMatchOrderRejectCommand(ByteBuffer buffer);
+    MatchOrderRejectEvent getMatchOrderRejectEvent(ByteBuffer buffer);
+    MatchCancelCommand getMatchCancelCommand();
+    MatchCancelCommand getMatchCancelCommand(ByteBuffer buffer);
+    MatchCancelEvent getMatchCancelEvent(ByteBuffer buffer);
+    MatchClientCancelReplaceRejectCommand getMatchClientCancelReplaceRejectCommand();
+    MatchClientCancelReplaceRejectCommand getMatchClientCancelReplaceRejectCommand(ByteBuffer buffer);
+    MatchClientCancelReplaceRejectEvent getMatchClientCancelReplaceRejectEvent(ByteBuffer buffer);
+    MatchCancelReplaceRejectCommand getMatchCancelReplaceRejectCommand();
+    MatchCancelReplaceRejectCommand getMatchCancelReplaceRejectCommand(ByteBuffer buffer);
+    MatchCancelReplaceRejectEvent getMatchCancelReplaceRejectEvent(ByteBuffer buffer);
+    MatchReplaceCommand getMatchReplaceCommand();
+    MatchReplaceCommand getMatchReplaceCommand(ByteBuffer buffer);
+    MatchReplaceEvent getMatchReplaceEvent(ByteBuffer buffer);
+    MatchFillCommand getMatchFillCommand();
+    MatchFillCommand getMatchFillCommand(ByteBuffer buffer);
+    MatchFillEvent getMatchFillEvent(ByteBuffer buffer);
+    MatchInboundCommand getMatchInboundCommand();
+    MatchInboundCommand getMatchInboundCommand(ByteBuffer buffer);
+    MatchInboundEvent getMatchInboundEvent(ByteBuffer buffer);
+    MatchOutboundCommand getMatchOutboundCommand();
+    MatchOutboundCommand getMatchOutboundCommand(ByteBuffer buffer);
+    MatchOutboundEvent getMatchOutboundEvent(ByteBuffer buffer);
+    MatchQuoteCommand getMatchQuoteCommand();
+    MatchQuoteCommand getMatchQuoteCommand(ByteBuffer buffer);
+    MatchQuoteEvent getMatchQuoteEvent(ByteBuffer buffer);
+    MatchMiscRejectCommand getMatchMiscRejectCommand();
+    MatchMiscRejectCommand getMatchMiscRejectCommand(ByteBuffer buffer);
+    MatchMiscRejectEvent getMatchMiscRejectEvent(ByteBuffer buffer);
+} 

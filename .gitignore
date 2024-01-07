@@ -1,0 +1,84 @@
+# Java
+out/
+build/
+target/
+.gradle/
+.idea/
+artifacts/
+gradle.properties
+
+# Mac
+.DS_STORE
+
+# Python
+*.pyc
+
+# Files
+nohup.out
+*.FIX*
+*.index
+*.iml
+*.pem
+*.bin
+*.idx
+
+# Visual Studio
+bin/
+obj/
+*.suo
+*.user
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+*.xcuserstate
+
+*.xcbkptlist
+
+src/main/swift/market/market.xcodeproj/project.xcworkspace/xcuserdata/jgreco.xcuserdatad/UserInterfaceState.xcuserstate
+
+*.xcbkptlist
+
+src/main/swift/market/market.xcodeproj/xcuserdata/jgreco.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+*\.BIN*
+/1
+/2
+/3
+/4
+/5
+/6
+/7
+/8
+/9
+
+*.log
+
+#Node server stuff
+.env
+*.log
+*.swp
+.DS_Store
+node_modules
+nohup.out
+
+
+src/main/web/xunit.xml
+src/main/dotnet/DirectMatchGUI/.vs/config/applicationhost.config
+publish
+
+# CORE specific files
+SEQFileStore*
+

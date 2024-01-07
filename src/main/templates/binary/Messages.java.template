@@ -1,0 +1,11 @@
+package $package;
+
+import java.nio.ByteBuffer;
+
+public interface ${prefix}Messages {
+  #for $msg in $msgs
+    ${prefix}${msg.name}Command get${prefix}${msg.name}Command();
+    ${prefix}${msg.name}Command get${prefix}${msg.name}Command(ByteBuffer buffer);
+    ${prefix}${msg.name}Event get${prefix}${msg.name}Event(ByteBuffer buffer);
+  #end for
+} 

@@ -1,0 +1,221 @@
+package com.core.connector.mold;
+
+<<<<<<< HEAD
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.nio.ByteBuffer;
+
+=======
+import com.core.app.heartbeats.StubHeartbeatApp;
+import com.core.match.msgs.MatchBaseDispatcher;
+import com.core.match.msgs.MatchByteBufferDispatcher;
+import com.core.match.msgs.MatchByteBufferMessages;
+import com.core.util.TimeUtils;
+import com.core.util.log.SystemOutLog;
+import com.core.util.time.SimulatedTimeSource;
+import com.core.util.time.TimerService;
+>>>>>>> dev
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.core.app.heartbeats.StubHeartbeatApp;
+import com.core.util.NullLog;
+import com.core.match.msgs.MatchBaseDispatcher;
+import com.core.match.msgs.MatchByteBufferDispatcher;
+import com.core.match.msgs.MatchByteBufferMessages;
+
+/**
+ * User: jgreco
+ */
+public class Mold64UDPConnectorTest {
+	private Mold64UDP downStream;
+	private Mold64UDP rewindStream;
+
+	private MatchByteBufferDispatcher dispatcher;
+	private Mold64UDPConnector connector;
+	private String sessionStr = "20140815AA";
+	private ByteBuffer session = ByteBuffer.wrap(sessionStr.getBytes());
+
+	private ByteBuffer sampleMsg = ByteBuffer.wrap("X                                                     ".getBytes());
+
+	@Before
+	public void setup() {
+		StubHeartbeatApp app = new StubHeartbeatApp("CON01");
+
+		dispatcher = new MatchByteBufferDispatcher(new MatchByteBufferMessages());
+<<<<<<< HEAD
+		stream = mock(Mold64UDP.class);
+		connector = new Mold64UDPConnector(new NullLog(), stream, dispatcher);
+		connector.onHeartbeatRegister(app);
+
+		verify(stream).setListener(connector);
+=======
+		downStream = mock(Mold64UDP.class);
+		rewindStream = mock(Mold64UDP.class);
+
+		timers = mock(TimerService.class);
+		SimulatedTimeSource timeSource = new SimulatedTimeSource();
+		connector = new Mold64UDPConnector(new SystemOutLog("CORE03-1", "TEST", timeSource), timers, downStream, rewindStream, dispatcher);
+		connector.onHeartbeatRegister(app);
+
+		verify(downStream).setListener(connector);
+		verify(rewindStream).setListener(connector);
+
+		when(Integer.valueOf(timers.scheduleTimer(TimeUtils.NANOS_PER_SECOND, connector))).thenReturn(Integer.valueOf(1));
+	}
+
+	@Test
+	public void testRerequestOnStartupMessage() {
+		connector.onMold64Packet(session, 4);
+		connector.onMold64Message(4, null);
+		connector.onMold64PacketComplete(session, 5);
+
+		verify(rewindStream).request(sessionStr, 1, 4);
+		verifyNoMoreInteractions(downStream);
+
+	}
+
+	@Test
+	public void testRerequestOnStartupHeartbeat() {
+		connector.onMold64Packet(session, 8);
+		connector.onMold64PacketComplete(session, 8);
+		verifyNoMoreInteractions(downStream);
+
+		verify(rewindStream).request(sessionStr, 1, 7);
+	}
+
+	@Test
+	public void testDispatchAndThenGap() {
+        final int[] count = {0};
+        dispatcher.subscribe((MatchBaseDispatcher.MatchAfterListener) msg -> {
+            if (msg.getMsgType() == 'X') {
+                count[0]++;
+            }
+        });
+
+		connector.onMold64Packet(session, 1);
+		connector.onMold64Message(1, sampleMsg);
+		connector.onMold64Message(2, sampleMsg);
+		connector.onMold64Message(3, sampleMsg);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64Message(6, sampleMsg);
+		connector.onMold64Message(7, sampleMsg);
+		connector.onMold64PacketComplete(session, 8);
+
+        Assert.assertEquals(4, count[0]);
+		verify(rewindStream).request(sessionStr, 5, 3);
+>>>>>>> dev
+	}
+
+	@Test
+	public void testIgnoreOldPacket() {
+        final int[] count = {0};
+        dispatcher.subscribe((MatchBaseDispatcher.MatchAfterListener) msg -> {
+            if (msg.getMsgType() == 'X') {
+                count[0]++;
+            }
+        });
+
+		connector.onMold64Packet(session, 1);
+		connector.onMold64Message(1, sampleMsg);
+		connector.onMold64Message(2, sampleMsg);
+		connector.onMold64Message(3, sampleMsg);
+		connector.onMold64PacketComplete(session, 4);
+
+		connector.onMold64Packet(session, 2);
+		connector.onMold64Message(2, sampleMsg);
+		connector.onMold64Message(3, sampleMsg);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64Message(5, sampleMsg);
+		connector.onMold64PacketComplete(session, 6);
+
+        Assert.assertEquals(5, count[0]);
+	}
+
+	@Test
+	public void testIgnoreOldSession() {
+        final int[] count = {0};
+		dispatcher.subscribe((MatchBaseDispatcher.MatchAfterListener) msg -> {
+            if (msg.getMsgType() == 'X') {
+                count[0]++;
+            }
+        });
+
+		connector.onMold64Packet(session, 1);
+		connector.onMold64Message(1, sampleMsg);
+		connector.onMold64Message(2, sampleMsg);
+		connector.onMold64Message(3, sampleMsg);
+		connector.onMold64PacketComplete(session, 4);
+
+		ByteBuffer invalidSession = ByteBuffer.wrap("20140814AA".getBytes());
+		Assert.assertFalse(connector.onMold64Packet(invalidSession, 1));
+        Assert.assertEquals(3, count[0]);
+	}
+
+<<<<<<< HEAD
+=======
+	@Test
+	public void testResendGapRequest() {
+		connector.onMold64Packet(session, 4);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64PacketComplete(session, 5);
+
+		verify(rewindStream).request(sessionStr, 1, 4);
+
+		connector.onMold64Packet(session, 1);
+		connector.onMold64Message(1, sampleMsg);
+		connector.onMold64Message(2, sampleMsg);
+		connector.onMold64PacketComplete(session, 3);
+
+		verify(rewindStream).request(sessionStr, 3, 2);
+		connector.onMold64Packet(session, 3);
+		connector.onMold64Message(3, sampleMsg);
+		connector.onMold64PacketComplete(session, 4);
+
+		verify(rewindStream).request(sessionStr, 4, 1);
+		connector.onMold64Packet(session, 4);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64PacketComplete(session, 5);
+	}
+
+	@Test
+	public void testPreventRapidRerequests() {
+		connector.onMold64Packet(session, 4);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64PacketComplete(session, 5);
+		verifyNoMoreInteractions(downStream);
+
+		verify(rewindStream).request(sessionStr, 1, 4);
+
+		connector.onMold64Packet(session, 5);
+		connector.onMold64Message(5, sampleMsg);
+		connector.onMold64Message(6, sampleMsg);
+		connector.onMold64PacketComplete(session, 7);
+		verifyNoMoreInteractions(downStream);
+
+		verifyNoMoreInteractions(rewindStream);
+	}
+
+	@Test
+	public void testDoRerequestOnTimeout() {
+		connector.onMold64Packet(session, 4);
+		connector.onMold64Message(4, sampleMsg);
+		connector.onMold64PacketComplete(session, 5);
+
+		verify(rewindStream).request(sessionStr, 1, 4);
+
+		connector.onMold64Packet(session, 5);
+		connector.onMold64Message(5, sampleMsg);
+		connector.onMold64Message(6, sampleMsg);
+		connector.onMold64PacketComplete(session, 7);
+
+		verifyNoMoreInteractions(rewindStream);
+
+		connector.onTimer(0, 0);
+
+		verify(rewindStream).request(sessionStr, 1, 6);
+	}
+>>>>>>> dev
+}

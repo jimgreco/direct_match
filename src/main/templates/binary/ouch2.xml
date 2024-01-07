@@ -1,0 +1,128 @@
+<core prefix="OUCH2"
+      package="com.core.match.ouch2.msgs"
+      timestampOffset="-1"
+      msgTypeOffset="0"
+	  types="types.xml">
+    <msg name="Common" id=".">
+        <field name="MsgType" type="Char" />
+        <field name="Timestamp" type="Timestamp" />
+        <field name="ClOrdID" type="Long" />
+    </msg>
+
+    <msg name="TradeConfirmation" id="T">
+	    <field name="ExecQty" type="QtyExternal"/>
+        <field name="ExecPrice" type="Price" />
+        <field name="MatchID" type="Int" />
+        <field name="Side" type="Char" />
+	    <field name="Security" type="RightPaddedFixedString" length="12" />
+	    <field name="TradeDate" type="Date" />
+	    <field name="TradeTime" type="Long" />
+        <field name="SettlementDate" type="Date" />
+        <field name="CommissionAmount" type="Price" />
+        <field name="Trader" type="RightPaddedFixedString" length="12"/>
+    </msg>
+
+    <msg name="Order" id="O">
+        <field name="Side" type="Char" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Security" type="RightPaddedFixedString" length="12" />
+        <field name="Price" type="Price" />
+        <field name="TimeInForce" type="Char" />
+        <field name="Reserved" type="Int" />
+        <field name="Trader" type="RightPaddedFixedString" length="12" />
+    </msg>
+
+    <msg name="Cancel" id="X">
+    </msg>
+
+    <msg name="Replace" id="U">
+        <field name="NewClOrdID" type="Long" />
+        <field name="NewQty" type="QtyExternal" />
+        <field name="NewPrice" type="Price" />
+        <field name="Reserved" type="Int" />
+    </msg>
+
+    <msg name="Accepted" id="A">
+        <field name="Side" type="Char" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Security" type="RightPaddedFixedString" length="12" />
+        <field name="Price" type="Price" />
+        <field name="TimeInForce" type="Char" />
+        <field name="Reserved" type="Int" />
+        <field name="Trader" type="RightPaddedFixedString" length="12" />
+        <field name="ExternalOrderID" type="Int" />
+    </msg>
+    
+    <msg name="Canceled" id="C">
+        <field name="Reason" type="Char" />
+        <field name="CanceledQty" type="QtyExternal" />
+    </msg>
+    
+    <msg name="Replaced" id="M">
+    	<field name="OldClOrdId" type="Long" />
+        <field name="Qty" type="QtyExternal" />
+        <field name="Price" type="Price" />
+        <field name="Reserved" type="QtyExternal" />
+        <field name="ExternalOrderID" type="Int" />
+    </msg>
+    
+    <msg name="CancelRejected" id="I">
+    	<field name="Reason" type="Char" />
+    </msg>
+    
+    <msg name="Rejected" id="J">
+        <field name="Reason" type="Char" />
+    </msg>
+
+    <msg name="Fill" id="E">
+        <field name="ExecutionQty" type="QtyExternal" />
+        <field name="ExecutionPrice" type="Price" />
+        <field name="MatchID" type="Int" />
+    </msg>
+
+    <enum name="Side">
+        <key name="Buy" value="B" />
+        <key name="Sell" value="S" />
+    </enum>
+    
+    <enum name="RejectReason">
+    	<!-- Invalid -->
+        <key name="InvalidAccount" value="A" />
+        <key name="InvalidTrader" value="V" />
+        <key name="InvalidSecurity" value="S" />
+    	<key name="InvalidPrice" value="X" />
+    	<key name="InvalidQuantity" value="Q" />
+    	<key name="InvalidSide" value="I" />
+
+        <!-- These order / replace parameters are not relevant yet -->
+        <key name="InvalidTIF" value="T" />
+        <key name="InvalidHiddenQuantity" value="H" />
+
+        <!-- Order lifecycle -->
+        <key name="DuplicateClOrdID" value="O" />
+        <key name="UnknownClOrdID" value="U" />
+        <key name="TooLateToCancelOrModify" value="Y" />
+
+        <!-- Disabled -->
+        <key name="AccountDisabled" value="D" />
+        <key name="TraderDisabled" value="B" />
+        <key name="SecurityDisabled" value="L" />
+
+        <!-- System parameters -->
+        <key name="TradingSystemClosed" value="C" />
+        <key name="RiskViolation" value="Z" />
+        <key name="InternalError" value="E" />
+    </enum>
+    
+    <enum name="CanceledReason">
+    	<key name="UserRequest" value="U" />
+    	<key name="ManuallyCanceled" value="M" />
+    	<key name="EndOfTradingDay" value="E" />
+    </enum>
+   
+    <enum name="TimeInForce">
+        <key name="DAY" value="0" />
+        <key name="IOC" value="3" />
+    </enum>
+</core>
+

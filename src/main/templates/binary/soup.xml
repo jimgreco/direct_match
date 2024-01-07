@@ -1,0 +1,57 @@
+<core prefix="Soup"
+      package="com.core.connector.soup.msgs"
+      timestampOffset="-1"
+      msgTypeOffset="2"
+	  types="types.xml">
+    <msg name="Common" id=".">
+        <field name="MsgLength" type="Short" />
+        <field name="MsgType" type="Char" />
+    </msg>
+
+    <!-- Server => Client Messages -->
+    <msg name="Debug" id="+">
+        <field name="Text" type="Bytes" />
+    </msg>
+
+    <msg name="LoginAccepted" id="A">
+        <field name="Session" type="LeftPaddedFixedString" length="10" />
+        <field name="SequenceNumber" type="LeftPaddedFixedString" length="20" />
+    </msg>
+
+    <msg name="LoginRejected" id="J">
+        <field name="RejectReasonCode" type="Char" />
+    </msg>
+
+    <msg name="SequencedData" id="S">
+        <field name="Message" type="Bytes" />
+    </msg>
+
+    <msg name="ServerHeartbeat" id="H">
+    </msg>
+
+    <msg name="EndOfSession" id="Z">
+    </msg>
+
+    <!-- Client => Server Messages -->
+    <msg name="LoginRequest" id="L">
+        <field name="Username" type="RightPaddedFixedString" length="6" />
+        <field name="Password" type="RightPaddedFixedString" length="10" />
+        <field name="RequestedSession" type="LeftPaddedFixedString" length="10" />
+        <field name="RequestedSequenceNumber" type="LeftPaddedFixedString" length="20" />
+    </msg>
+
+    <msg name="UnsequencedData" id="U">
+        <field name="Message" type="Bytes" />
+    </msg>
+
+    <msg name="ClientHeartbeat" id="R">
+    </msg>
+
+    <msg name="LogoutRequest" id="O">
+    </msg>
+
+    <enum name="RejectReason">
+        <key name="NotAuthorized" value="A" />
+        <key name="SessionNotAvailable" value="S" />
+    </enum>
+</core>

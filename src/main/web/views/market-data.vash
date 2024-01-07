@@ -1,0 +1,54 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+		<link rel="stylesheet" href="/market-data.css">
+	})
+	
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		MARKET_DATA_URL = '@model.url';
+		</script>		
+		<script src="/market-data.js"></script>
+	})
+	
+	@html.block('content', function(model) {
+		<div class="container" ng-controller="MarketDataController">
+	    	<table>
+				<thead>
+					<tr>
+						<th class="right" colspan="3">&nbsp;</th>
+						<th class="center" colspan="5">Direct Match</td>
+						<th class="center" colspan="3">IDC</td>
+						<th class="center" colspan="3">Bloomberg</td>
+					</tr>
+				</thead>				
+	    		<tbody>
+					<tr ng-repeat="i in [0, 1, 2]">					
+						<td class="right line" colspan="3">{{ d[i]['name'] }}</td>
+						<td class="center line" colspan="5" animate-on-change="d[i]['dmBid']">{{ d[i]['dmBid'] | HHMMSSsss }}</td>
+						<td class="center line" colspan="3" animate-on-change="d[i]['idcBid']">{{ d[i]['idcBid'] | HHMMSSsss }}</td>
+						<td class="center line" colspan="3" animate-on-change="d[i]['bbrgBid']">{{ d[i]['bbrgBid'] | HHMMSSsss }}</td>
+					</tr>
+					<tr ng-repeat="i in [3, 4, 5, 6, 7, 8]">
+						<td class="right line">{{ d[i]['name'] }}</td>
+						<td class="right">{{ d[i]['coupon'] | number: 3 }}%</td>
+						<td class="right line">{{ d[i]['maturityDate'] | MMYY }}</td>
+					
+						<td class="right" animate-on-change="d[i]['dmBidQty']">{{ d[i]['dmBidQty'] }}</td>
+						<td class="right" animate-on-change="d[i]['dmBid']">{{ d[i]['dmBid'] }}</td>	
+						<td class="center">x</td>	
+						<td class="right" animate-on-change="d[i]['dmAsk']">{{ d[i]['dmAsk'] }}</td>
+						<td class="right line" animate-on-change="d[i]['dmQty']">{{ d[i]['dmAskQty'] }}</td>
+					
+						<td class="right" animate-on-change="d[i]['idcBid']">{{ d[i]['idcBid'] }}</td>
+						<td class="center">x</td>	
+						<td class="right line" animate-on-change="d[i]['idcAsk']">{{ d[i]['idcAsk'] }}</td>					
+					
+						<td class="right" animate-on-change="d[i]['bbrgBid']">{{ d[i]['bbrgBid'] }}</td>	
+						<td class="center">x</td>	
+						<td class="right" animate-on-change="d[i]['bbrgAsk']">{{ d[i]['bbrgAsk'] }}</td>			
+					</tr>
+				</tbody>
+			</table>
+		</div>	
+	})
+})

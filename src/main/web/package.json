@@ -1,0 +1,26 @@
+{
+  "name": "directmatch",
+  "description": "Direct Match Website",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^0.8.3",
+    "body-parser": "^1.9.0",
+    "dotenv": "^2.0.0",
+    "express": "4.x",
+    "express-session": "~1.13.0",
+    "log4js": "~0.6.15",
+    "mocha": "^2.3.4",
+    "mysql": "^2.7.0",
+    "nodeunit": "^0.9.1",
+    "request": "^2.45.0",
+    "sendmail": "^0.2.1",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5",
+    "vash": "^0.11.0",
+    "xunit-file": "0.0.9"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --recursive -R xunit-file test/"
+  }
+}

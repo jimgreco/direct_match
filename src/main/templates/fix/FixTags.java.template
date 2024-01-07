@@ -1,0 +1,21 @@
+package ${package};
+
+//
+// THIS FILE IS AUTO-GENERATED 
+//
+public class ${prefix}Tags {
+  #for $tag in $tags
+    public static final int ${tag.name} = $tag.id;
+  #end for
+
+    public static String getTagName(int id) {
+        switch(id) {
+  #for $tag in $tags
+            case ${tag.name}:
+                return "${tag.name}";
+  #end for
+            default:
+                return "Unknown";
+        }
+    }
+}

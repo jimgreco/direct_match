@@ -1,0 +1,121 @@
+@html.extend('layout', function(model) {
+	@html.block('css', function(model) {
+		<style>
+		.order td:first-child { text-align:right; }
+		.order td:last-child { text-align:right; }
+		</style>
+	})
+	
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		CORE_URL = '@model.url';
+		ORDER_ID = '@model.id';
+		CANCEL_URL = '@model.cancelUrl';
+		</script>
+		<script src="/history.js"></script>
+	})
+	
+	@html.block('content', function(model) {		
+		<div class="container" ng-controller="HistoryController" ng-init="new_id = @model.id">			
+			<div>Order ID:</div>
+			<br>
+			<form ng-submit="submit(new_id)"><input type="text" ng-model="new_id"></form>
+			<br>
+			<table class="order">
+				<tr>
+					<td>Status</td>
+					<td>{{ order.status }}</td>
+				</tr>
+				<tr>
+					<td>Contributor</td>
+					<td>{{ order.contributor }}</td>
+				</tr>
+				<tr>
+					<td>Trader</td>
+					<td>{{ order.trader }}</td>
+				</tr>
+				<tr>
+					<td>Account</td>
+					<td>{{ order.account }}</td>
+				</tr>
+				<tr>
+					<td>Side</td>
+					<td>{{ order.side }}</td>
+				</tr>
+				<tr>
+					<td>Qty</td>
+					<td>{{ order.qty }}</td>
+				</tr>
+				<tr>
+					<td>Security</td>
+					<td>{{ order.security }}</td>
+				</tr>
+				<tr>
+					<td>Price(32)</td>
+					<td>{{ order.price32 }}</td>
+				</tr>
+				<tr>
+					<td>Price</td>
+					<td>{{ order.price }}</td>
+				</tr>
+				<tr>
+					<td>TIF</td>
+					<td>{{ order.tif }}</td>
+				</tr>
+				<tr>
+					<td>CumQty</td>
+					<td>{{ order.cumQty }}</td>
+				</tr>
+				<tr>
+					<td>AvgPx</td>
+					<td>{{ order.avgPx }}</td>
+				</tr>
+				<tr>
+					<td>AvgPx(32)</td>
+					<td>{{ order.avgPx32 }}</td>
+				</tr>
+				<tr>
+					<td>Created</td>
+					<td>{{ order.created | HHMMSSsss }}</td>
+				</tr>
+				<tr>
+					<td>Updated</td>
+					<td>{{ order.updated | HHMMSSsss }}</td>
+				</tr>
+			</table>
+			<br>
+	    	<table>				
+				<thead>
+					<tr>
+						<th>Timestamp</th>
+						<th>MsgType</th>
+						<th>Contributor</th>
+						<th>Qty</th>
+						<th>Cum Qty</th>								
+						<th>Price</th>		
+						<th>ClOrdID</th>				
+						<th>Execution</th>				
+						<th>Reject</th>									
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in data">
+						<td>{{ item.timestamp }}</td>
+						<td>{{ item.msgType }}</td>
+						<td>{{ item.contributor }}</td>
+						<td>{{ item.qty }}</td>
+						<td>{{ item.cumQty }}</td>					
+						<td>{{ item.price32 }}</td>
+						<td>{{ item.clOrdID }}</td>				
+						<td><span ng-if="item.execQty">{{ item.execQty }} x {{ item.execPrice32 }} ({{ item.execPrice }})</span></td>					
+						<td>{{ item.rejectReason }} {{ item.text }}</td>
+					</tr>
+				</tbody>
+			</table>
+			<br>
+			<form ng-submit="cancel(@model.id)"><button type="submit"> Cancel order #@model.id</button></form>
+			<br>
+			<label>{{cancelmsg}}</label>   
+		</div>	
+	})
+})

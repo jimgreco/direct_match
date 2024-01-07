@@ -1,0 +1,103 @@
+<types>
+    <type name="Bool" length="1" bytes="primitive">
+        <get type="boolean" call="com.core.util.MessageUtils.getBool" printer="true" />
+        <set type="boolean" call="com.core.util.MessageUtils.setBool" />
+    </type>
+
+    <type name="Char" length="1" bytes="primitive">
+        <get type="char" call="com.core.util.MessageUtils.getChar" printer="true" />
+        <set type="char" call="com.core.util.MessageUtils.setChar" />
+    </type>
+
+    <type name="Byte" length="1" bytes="primitive">
+        <get type="byte" call="com.core.util.MessageUtils.getByte" printer="true" />
+        <set type="byte" call="com.core.util.MessageUtils.setByte" />
+    </type>
+
+    <type name="Short" length="2" bytes="primitive">
+        <get type="short" call="com.core.util.MessageUtils.getShort" printer="true" />
+        <set type="short" call="com.core.util.MessageUtils.setShort" />
+    </type>
+
+    <type name="Int" length="4" bytes="primitive">
+        <get type="int" call="com.core.util.MessageUtils.getInt" printer="true" />
+        <set type="int" call="com.core.util.MessageUtils.setInt" />
+    </type>
+
+    <type name="Long" length="8" bytes="primitive">
+        <get type="long" call="com.core.util.MessageUtils.getLong" printer="true" />
+        <set type="long" call="com.core.util.MessageUtils.setLong" />
+    </type>
+	
+    <type name="String" length="2" bytes="variable">
+        <get type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.getVariableString" />
+        <set type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.setVariableString" />
+        <get type="int" call="com.core.util.MessageUtils.getStringLength" name="Length" />
+        <get type="String" call="com.core.util.MessageUtils.toVariableString" name="AsString" printer="true" />
+		<set type="String" call="com.core.util.MessageUtils.setVariableString" />
+    </type>
+	
+    <type name="LeftPaddedFixedString" length="0" bytes="fixed">
+        <get type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.getLeftPaddedFixedString" />
+        <set type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.setLeftPaddedFixedString" />
+        <get type="int" call="com.core.util.MessageUtils.getFixedStringLength" name="Length" />
+        <get type="String" call="com.core.util.MessageUtils.toLeftPaddedFixedString" name="AsString" printer="true" />
+        <set type="String" call="com.core.util.MessageUtils.setLeftPaddedFixedString" />
+    </type>
+	
+    <type name="RightPaddedFixedString" length="0" bytes="fixed">
+        <get type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.getRightPaddedFixedString" />
+        <set type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.setRightPaddedFixedString" />
+        <get type="int" call="com.core.util.MessageUtils.getFixedStringLength" name="Length" />
+        <get type="String" call="com.core.util.MessageUtils.toRightPaddedFixedString" name="AsString" printer="true" />
+        <set type="String" call="com.core.util.MessageUtils.setRightPaddedFixedString" />
+    </type>
+
+    <type name="Bytes" length="0" bytes="end">
+        <get type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.getBytes" />
+        <set type="java.nio.ByteBuffer" call="com.core.util.MessageUtils.setBytes" />
+        <get type="int" call="com.core.util.MessageUtils.getBytesLength" name="Length" />
+		<get type="String" call="com.core.util.MessageUtils.toString" name="AsString" />
+		<get type="String" call="com.core.util.MessageUtils.toHexString" name="AsHexString" printer="true" />
+		<set type="String" call="com.core.util.MessageUtils.setBytes" />
+    </type>
+	
+    <type name="Timestamp" length="8" bytes="primitive">
+        <get type="long" call="com.core.util.MessageUtils.getLong" />
+        <set type="long" call="com.core.util.MessageUtils.setLong" />
+        <get type="java.time.LocalDateTime" call="com.core.util.MessageUtils.getDateTime" name="AsTime" printer="true" />
+    </type>
+
+    <type name="Date" length="4" bytes="primitive">
+        <get type="int" call="com.core.util.MessageUtils.getInt" printer="true" />
+        <set type="int" call="com.core.util.MessageUtils.setInt" />
+        <get type="java.time.LocalDate" call="com.core.util.MessageUtils.getDate" name="AsDate" />
+        <set type="java.time.LocalDate" call="com.core.util.MessageUtils.setDate" name="AsDate" />
+    </type>
+	
+    <type name="Price" length="8" bytes="primitive">
+        <get type="long" call="com.core.util.MessageUtils.getLong" />
+        <set type="long" call="com.core.util.MessageUtils.setLong" />
+		<get type="String" call="com.core.match.util.MessageUtils.to32ndPrice" name="As32nd" printer="true" />
+		<get type="double" call="com.core.match.util.MessageUtils.getDoublePrice" name="AsDouble" />
+		<set type="double" call="com.core.match.util.MessageUtils.setDoublePrice" />
+    </type>
+
+    <type name="Qty" length="4" bytes="primitive">
+        <get type="int" call="com.core.util.MessageUtils.getInt" printer="true" />
+        <set type="int" call="com.core.util.MessageUtils.setInt" />
+        <get type="double" call="com.core.match.util.MessageUtils.toQtyRoundLot" name="AsQty" printer="true" />
+    </type>
+	
+    <type name="BigQty" length="4" bytes="primitive">
+        <get type="long" call="com.core.util.MessageUtils.getLong" printer="true" />
+        <set type="long" call="com.core.util.MessageUtils.setLong" />
+        <get type="double" call="com.core.match.util.MessageUtils.toQtyRoundLot" name="AsQty" printer="true" />
+    </type>
+
+    <type name="QtyExternal" length="4" bytes="primitive">
+        <get type="int" call="com.core.util.MessageUtils.getInt" printer="true" />
+        <set type="int" call="com.core.util.MessageUtils.setInt" />
+        <get type="double" call="com.core.match.util.MessageUtils.toExternalQtyRoundLot" name="AsQty" printer="true" />
+    </type>
+</types>

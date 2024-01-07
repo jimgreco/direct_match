@@ -1,0 +1,30 @@
+package $package;
+
+import java.nio.ByteBuffer;
+
+public class ${prefix}ByteBufferMessages implements ${prefix}Messages {
+    private final ByteBuffer temp = ByteBuffer.allocateDirect(1500);
+
+  #for $msg in $msgs
+    private final ${prefix}${msg.name}ByteBufferMessage cmd${msg.name} = new ${prefix}${msg.name}ByteBufferMessage(); 
+    private final ${prefix}${msg.name}ByteBufferMessage event${msg.name} = new ${prefix}${msg.name}ByteBufferMessage(); 
+  #end for
+ 
+  #for $msg in $msgs
+    @Override
+    public ${prefix}${msg.name}Command get${prefix}${msg.name}Command() {
+        temp.clear();
+        return cmd${msg.name}.wrapCommand(temp);
+    }
+
+    @Override
+    public ${prefix}${msg.name}Command get${prefix}${msg.name}Command(ByteBuffer buffer) {
+        return cmd${msg.name}.wrapCommand(buffer);
+    }
+
+    @Override
+    public ${prefix}${msg.name}Event get${prefix}${msg.name}Event(ByteBuffer buffer) {
+        return event${msg.name}.wrapEvent(buffer);
+    }
+  #end for
+}

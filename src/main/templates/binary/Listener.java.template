@@ -1,0 +1,5 @@
+package $package;
+
+public interface ${prefix}${msg.name}Listener {
+    void on${prefix}${msg.name}(${prefix}${msg.name}Event msg); 
+} 

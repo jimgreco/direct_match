@@ -1,0 +1,154 @@
+@html.extend('layout', function(model) {
+	@html.block('js', function(model) {
+		<script type="text/javascript">
+		CORE = '@model.core';
+		ORDER_MON_URL = '@model.url';
+		CANCEL_URL = '@model.cancelUrl';
+		PARAMS = '@model.params';
+		PAGE = '@model.page';
+		NEWEST_FIRST = '@model.newestFirst';
+		</script>
+		<style>
+			table,th,td {
+    			white-space: nowrap;
+    			border: 1px solid DodgerBlue;
+    			padding: 1;
+    			table-layout: fixed;
+			}
+	    </style>
+		<script src="/cancel.js"></script>				
+		<script src="/orders.js"></script>
+	})
+	
+	@html.block('content', function(model) {
+	<div style="margin-left:45px;" class="container" ng-controller="OrdersController">
+		<form name="FormName" ng-submit="getOrders()">
+		    <label>
+		 	  Trader:
+		        <input name="Trader" ng-model="trader" value="{{trader}}" />
+		    </label>
+		     <label>
+		 	      Security:
+		        <input name="Security" ng-model="sec" value="{{sec}}" />
+		    </label>
+		    <label>
+		      Contributor:
+		        <input name="Contributor" ng-model="contributor" value="{{contributor}}" />
+		    </label>
+		     <label>
+		          Account:
+		        <input name="Account" ng-model="account" value="{{account}}" />
+		    </label>
+		    <label>
+		    	Newest orders first:
+		    	<input type="checkbox" name="NewestFirst" ng-init="newestFirst=@model.newestFirst" ng-model="newestFirst" />
+		    </label>
+		    <button style="margin-right:10px" type="submit"> Search </button> 
+		    <label>
+		        {{warning}}
+		    </label>     
+		</form>
+	
+		<button style="margin-bottom:10px" ng-show="selTrader&&!selSec&&!selContributor&&!selAccount" ng-click="cancel('Trader', selTrader)">Cancel all {{selTrader}} orders</button>
+	 	<button style="margin-bottom:10px" ng-show="selSec&&!selTrader&&!selContributor&&!selAccount" ng-click="cancel('Security', selSec)">Cancel all {{selSec}} orders</button>
+	 	<button style="margin-bottom:10px" ng-show="selContributor&&!selTrader&&!selSec&&!selAccount" ng-click="cancel('Contributor', selContributor)">Cancel all {{selContributor}} orders</button>
+	 	<button style="margin-bottom:10px" ng-show="selAccount&&!selTrader&&!selSec&&!selContributor" ng-click="cancel('Account', selAccount)">Cancel all {{selAccount}} orders</button>
+
+	    <table>
+	        <thead>
+	            <tr>
+	                <th ng-click="sortOnClick('id')">ID
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('status')">Status
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='status'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('account')">Acct
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='account'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('trader')">Trader
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='trader'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+
+	                <th ng-click="sortOnClick('side')">Side
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='side'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('qty')">Qty
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='qty'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('security')">Sec
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='security'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('price32')">Price(32)
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='price32'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('price')">Price
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='price'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('clOrdID')">ClOrdID
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='clOrdID'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('contributor')">Contrib
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='contributor'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('tif')">TIF
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='tif'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+	                <th ng-click="sortOnClick('cumQty')">CumQty
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='cumQty'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>              
+	                <th ng-click="sortOnClick('avgPx32')">AvgPx(32)
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='avgPx32'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>              
+	                <th ng-click="sortOnClick('avgPx')">AvgPx
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='avgPx'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th> 
+	                <th ng-click="sortOnClick('created')">Created
+	                    <span class="glyphicon sort-icon" ng-show="sortKey=='created'" ng-class="{'glyphicon-chevron-up':!reverseSort,'glyphicon-chevron-down':reverseSort}"></span>
+	                </th>
+					<th>Cancel</th>
+	            </tr>
+	        </thead>
+			
+			<tbody ng-repeat="track in tracks | orderBy:[orderByField,selNewestFirst==true?'-id':'id']">
+		      	<tr>
+					<td><a href="/history/@model.core/{{track.id}}" target="_self">{{track.id}}</a></td>
+	                <td>{{track.status}}</td>
+		      		<td>{{track.account}}</td>
+		      		<td>{{track.trader}}</td>
+		      		<td>{{track.side}}</td>
+		      		<td>{{track.qty}}</td>
+		      		<td>{{track.security}}</td>
+		      		<td>{{track.price32}}</td>
+		      		<td>{{track.price}}</td>
+		      		<td>{{track.clOrdID}}</td>
+		      		<td>{{track.contributor}}</td>
+		      		<td>{{track.tif}}</td>
+		      		<td>{{track.cumQty}}</td>	  
+		      		<td>{{track.avgPx32}}</td>	      		
+		      		<td>{{track.avgPx}}</td>	
+	                <td>{{track.created}}</td>
+					<td><button ng-click="cancel('Order', track, 'id')">Cxl</button></td>
+		      	</tr>
+		    </tbody>
+		 </table>
+
+		 <br>
+
+		<form name="PageSelection" ng-submit="pageChanged()">
+		    <label>
+		      Page
+		        <input size="5" name="CurrentPage" ng-model="currentPage" value="{{page}}" />
+		    </label>
+		    <label style="margin-right:10px">
+		        of {{numPages}}
+		    </label>     
+		</form>
+		
+		<button ng-click="firstPage()" ng-disabled="currentPage<=1">First</button>
+		<button ng-click="prevPage()" ng-disabled="currentPage<=1">Prev</button>
+		<button ng-click="nextPage()" ng-disabled="currentPage>=numPages">Next</button>
+		<button ng-click="lastPage()" ng-disabled="currentPage>=numPages">Last</button>
+	</div>
+	})
+})

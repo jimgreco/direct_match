@@ -1,0 +1,84 @@
+package ${package};
+
+//
+// THIS FILE IS AUTO-GENERATED
+//
+public class ${prefix}Constants {
+  #for $constant in $constants
+    public static#if $constant.final# final#end if# $constant.type $constant.name = $constant.value;
+  #end for
+
+    public static void setParam(String param, String value) {
+  #for $constant in $constants		
+    #if not $constant.final
+        if (param.equalsIgnoreCase("${constant.name}")) {
+        #if $constant.type == 'int'  
+            $constant.name = Integer.parseInt(value);
+        #elif $constant.type == 'long'
+            $constant.name = Long.parseLong(value);
+        #elif $constant.type == 'String'
+            $constant.name = value;
+        #end if
+        }
+    #end if
+  #end for
+    }
+#for $enum in $enums
+	
+    public static class ${enum.name} {
+  #for $key in $enum.keys
+        public static final char $key.name = '${key.value}';
+  #end for
+   
+        public static String toString(char code) {
+            switch(code) {
+  #for $key in $enum.keys
+                case $key.name:
+                    return "$key.name";
+  #end for  
+                default:
+                    return "Unknown";
+            }
+        }
+
+        public static char toChar(String name) {
+            switch(name) {
+  #for $key in $enum.keys
+                case "$key.name":
+                    return $key.name;       
+  #end for
+                default:
+                    return (char)0;
+            }
+        }
+
+        public static boolean isValid(char code) {
+            switch(code) {
+  #for $key in $enum.keys
+                case $key.name:
+  #end for
+                    return true;       
+                default:
+                    return false;
+            }
+        }
+    }
+#end for
+
+    public static class Messages {
+#for $msg in $msgs
+        public static final char ${msg.name} = '${msg.id}';
+#end for
+
+        public static String toString(char code) {
+            switch(code) {
+#for $msg in $msgs
+                case '$msg.id':
+                    return "$msg.name";
+#end for
+                default:
+                    return "Unknown";
+            }
+        }
+    }
+}

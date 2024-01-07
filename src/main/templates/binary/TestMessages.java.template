@@ -1,0 +1,37 @@
+package $package;
+
+import java.nio.ByteBuffer;
+
+public class ${prefix}TestMessages implements ${prefix}Messages {
+    public <T> T get(Class<T> cls, ByteBuffer buffer) {
+#for $msg in $msgs
+        if (cls.equals(${prefix}${msg.name}Event.class)) {
+            return (T)get${prefix}${msg.name}Event(buffer);
+        }
+#end for
+        return null;
+    }
+#for $msg in $msgs
+
+    @Override
+    public ${prefix}${msg.name}Command get${prefix}${msg.name}Command() {
+		${prefix}${msg.name}ByteBufferMessage msg = new ${prefix}${msg.name}ByteBufferMessage();
+		msg.wrapCommand(ByteBuffer.allocate(1500));
+		return msg;
+    }
+
+    @Override
+    public ${prefix}${msg.name}Command get${prefix}${msg.name}Command(ByteBuffer buffer) {
+		${prefix}${msg.name}ByteBufferMessage msg = new ${prefix}${msg.name}ByteBufferMessage();
+		msg.wrapCommand(buffer);
+		return msg;
+    }
+
+    @Override
+    public ${prefix}${msg.name}Event get${prefix}${msg.name}Event(ByteBuffer buffer) {
+		${prefix}${msg.name}ByteBufferMessage msg = new ${prefix}${msg.name}ByteBufferMessage();
+		msg.wrapEvent(buffer);
+		return msg;
+    }
+#end for
+}

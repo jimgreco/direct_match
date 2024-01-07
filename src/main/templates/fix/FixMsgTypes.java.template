@@ -1,0 +1,22 @@
+package ${package};
+
+//
+// THIS FILE IS AUTO-GENERATED 
+//
+public class ${prefix}MsgTypes {
+  #for $msg in $msgs
+    public static final char ${msg.name} = '${msg.id}';
+  #end for
+
+    public static String getMsgTypeName(char id) {
+        switch(id) {
+  #for $msg in $msgs
+            case ${msg.name}:
+                return "${msg.name}";
+  #end for
+            default:
+                return "Unknown";
+        }
+    }
+}
+

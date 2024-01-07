@@ -1,0 +1,130 @@
+package com.core.match.ouch.msgs;
+
+import java.nio.ByteBuffer;
+
+public class OUCHCancelByteBufferMessage implements 
+	OUCHCancelEvent, 
+	OUCHCancelCommand {
+    private static final int DEFAULT_LENGTH = 9;
+    private static final byte[] EMPTY = new byte[DEFAULT_LENGTH];
+     
+    static {
+        java.util.Arrays.fill(EMPTY, com.core.util.MessageUtils.NULL_BYTE);
+    }
+   
+    private ByteBuffer buffer;
+    private int stringsBlockLength;
+
+    @Override
+    public int getLength() {
+       return DEFAULT_LENGTH + stringsBlockLength;
+    }
+	
+    @Override
+    public void setLength(int length) {
+        stringsBlockLength = (length - DEFAULT_LENGTH);
+    }
+
+    @Override
+    public ByteBuffer getRawBuffer() {
+       return buffer;
+    }
+ 
+    @Override
+    public void copy(OUCHCancelEvent cmd) {
+        setMsgType(cmd.getMsgType());
+        setClOrdID(cmd.getClOrdID());
+    }
+
+    @Override
+    public OUCHCancelEvent toEvent() {
+        return this;
+    }
+
+    @Override
+    public OUCHCancelCommand toCommand() {
+        return this;
+    }
+
+    @Override
+    public String getMsgName() {
+        return "Cancel";
+    }
+ 
+    public OUCHCancelCommand wrapCommand(ByteBuffer buf) {
+        buffer = buf;
+        buffer.mark();
+        buffer.put(EMPTY);
+        buffer.reset();
+        setMsgType('X');
+        stringsBlockLength = 0;
+        return this;
+    }
+
+    public OUCHCancelEvent wrapEvent(ByteBuffer buf) {
+        buffer = buf;
+		setLength(buffer.remaining());
+        return this;
+    }
+
+     @Override
+     public char getMsgType() {
+         return com.core.util.MessageUtils.getChar(buffer, Offsets.MsgType);  	 
+     }
+
+    @Override
+    public void setMsgType(char value) {
+    	com.core.util.MessageUtils.setChar(buffer, Offsets.MsgType, value);  									
+    }
+
+    @Override
+    public boolean hasMsgType() {
+        return com.core.util.MessageUtils.doesFieldExist(buffer, Offsets.MsgType, Lengths.MsgType);  
+    }
+
+     @Override
+     public long getClOrdID() {
+         return com.core.util.MessageUtils.getLong(buffer, Offsets.ClOrdID);  	 
+     }
+
+    @Override
+    public void setClOrdID(long value) {
+    	com.core.util.MessageUtils.setLong(buffer, Offsets.ClOrdID, value);  									
+    }
+
+    @Override
+    public boolean hasClOrdID() {
+        return com.core.util.MessageUtils.doesFieldExist(buffer, Offsets.ClOrdID, Lengths.ClOrdID);  
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Msg=Cancel");
+        builder.append(",MsgType=");
+        if (hasMsgType()) {
+            builder.append(getMsgType());
+        }
+        else {
+            builder.append("<NULL>");
+        }
+        builder.append(",ClOrdID=");
+        if (hasClOrdID()) {
+            builder.append(getClOrdID());
+        }
+        else {
+            builder.append("<NULL>");
+        }
+        return builder.toString();        
+    }
+
+    private static class Offsets {
+        static int MsgType = 0;
+        static int ClOrdID = 1;
+    }
+	
+    private static class Lengths {
+        static int MsgType = 1;
+        static int ClOrdID = 8;
+    }
+} 
